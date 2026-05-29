@@ -1,0 +1,73 @@
+---
+import { Icon } from "astro-icon/components";
+
+interface Props {
+	period?: string;
+	repoUrl?: string;
+	storeUrl?: string;
+	subtitle?: string;
+	tags?: string[];
+	title: string;
+	titleUrl?: string;
+}
+
+const { period, repoUrl, storeUrl, subtitle, tags, title, titleUrl } = Astro.props;
+---
+
+<article class="mb-8 last:mb-0">
+	<div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+		<div class="flex items-center gap-x-2">
+			<h3 class="text-accent-2 text-base font-semibold">
+				{
+					titleUrl ? (
+						<a class="cactus-link" href={titleUrl} rel="noreferrer" target="_blank">
+							{title}
+						</a>
+					) : (
+						title
+					)
+				}
+			</h3>
+			{
+				repoUrl && (
+					<a
+						class="text-muted hover:text-link inline-flex"
+						href={repoUrl}
+						rel="noreferrer"
+						target="_blank"
+					>
+						<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:github" />
+						<span class="sr-only">{title} GitHub 저장소</span>
+					</a>
+				)
+			}
+			{
+				storeUrl && (
+					<a
+						class="text-muted hover:text-link inline-flex"
+						href={storeUrl}
+						rel="noreferrer"
+						target="_blank"
+					>
+						<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:google-play" />
+						<span class="sr-only">{title} Google Play 스토어</span>
+					</a>
+				)
+			}
+		</div>
+		{period && <span class="text-muted text-xs">{period}</span>}
+	</div>
+	{subtitle && <p class="text-muted mt-1 text-sm">{subtitle}</p>}
+	{
+		tags && tags.length > 0 && (
+			<ul class="mt-2 flex flex-wrap gap-x-2 gap-y-1">
+				{tags.map((tag) => (
+					<li class="text-muted text-xs">#{tag}</li>
+				))}
+			</ul>
+		)
+	}
+	<div class="prose prose-sm prose-cactus mt-3 max-w-none">
+		<slot />
+	</div>
+</article>
