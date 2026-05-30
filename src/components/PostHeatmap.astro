@@ -1,0 +1,86 @@
+---
+import type { CollectionEntry } from "astro:content";
+
+interface Props {
+	posts: CollectionEntry<"post">[];
+	weeks?: number;
+}
+
+const { posts, weeks = 18 } = Astro.props;
+
+const toKey = (d: Date) =>
+	`${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;
+
+// 일자별 { count, firstId } — 오름차순 정렬 후 버킷 => firstId = 그날 가장 이른 글
+const byDay = new Map<string, { count: number; firstId: string }>();
+for (const p of [...posts].sort(
+	(a, b) => a.data.publishDate.getTime() - b.data.publishDate.getTime(),
+)) {
+	const k = toKey(p.data.publishDate);
+	const ex = byDay.get(k);
+	if (ex) ex.count += 1;
+	else byDay.set(k, { count: 1, firstId: p.id });
+}
+
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+const endOfWeek = new Date(today);
+endOfWeek.setDate(today.getDate() + (6 - today.getDay())); // 이번 주 토요일
+const start = new Date(endOfWeek);
+start.setDate(endOfWeek.getDate() - (weeks * 7 - 1)); // 범위 첫 일요일
+
+interface Cell {
+	date: Date;
+	count: number;
+	firstId: string | null;
+	isFuture: boolean;
+}
+
+const cells: Cell[] = [];
+for (let i = 0; i < weeks * 7; i++) {
+	const d = new Date(start);
+	d.setDate(start.getDate() + i);
+	const hit = byDay.get(toKey(d));
+	cells.push({
+		date: d,
+		count: hit?.count ?? 0,
+		firstId: hit?.firstId ?? null,
+		isFuture: d.getTime() > today.getTime(),
+	});
+}
+
+const level = (c: number) => (c === 0 ? 0 : c === 1 ? 1 : c === 2 ? 2 : 3);
+const levelClass = ["bg-global-text/10", "bg-accent/40", "bg-accent/70", "bg-accent"];
+const fmt = (d: Date) =>
+	`${d.getFullYear()}.${String(d.getMonth() + 1).padStart(2, "0")}.${String(d.getDate()).padStart(2, "0")}`;
+---
+
+<div class="not-prose">
+	<div class="grid grid-flow-col grid-rows-7 gap-[3px]">
+		{
+			cells.map((cell) => {
+				const cls = `h-3 w-3 rounded-[2px] ${levelClass[level(cell.count)]} ${cell.isFuture ? "opacity-30" : ""}`;
+				const tip = cell.isFuture
+					? fmt(cell.date)
+					: cell.count > 0
+						? `${fmt(cell.date)} — ${cell.count}개의 글`
+						: `${fmt(cell.date)} — 글 없음`;
+				return cell.firstId && !cell.isFuture ? (
+					<a
+						href={`/posts/${cell.firstId}/`}
+						class={`${cls} block transition-transform hover:scale-125`}
+						title={tip}
+						aria-label={tip}
+					/>
+				) : (
+					<span class={cls} title={tip} aria-hidden="true" />
+				);
+			})
+		}
+	</div>
+	<div class="text-muted mt-2 flex items-center gap-1 text-[10px]">
+		<span>Less</span>
+		{[0, 1, 2, 3].map((l) => <span class={`h-3 w-3 rounded-[2px] ${levelClass[l]}`} />)}
+		<span>More</span>
+	</div>
+</div>
