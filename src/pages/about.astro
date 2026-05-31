@@ -1,4 +1,5 @@
 ---
+import { Icon } from "astro-icon/components";
 import CVEntry from "@/components/cv/CVEntry.astro";
 import CVSection from "@/components/cv/CVSection.astro";
 import SocialList from "@/components/SocialList.astro";
@@ -46,6 +47,18 @@ const awards: {
 ---
 
 <PageLayout meta={meta}>
+	<div class="mb-4 flex justify-end print:hidden">
+		<button
+			type="button"
+			id="cv-print"
+			class="border-accent-2/30 text-muted hover:text-link inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs"
+		>
+			<Icon aria-hidden="true" class="h-4 w-4" focusable="false" name="mdi:file-pdf-box" />
+			PDF로 저장
+		</button>
+	</div>
+
+	<div id="cv-document">
 	<header class="mb-4 flex flex-wrap items-end justify-between gap-4">
 		<div>
 			<h1 class="title mb-1">최한기</h1>
@@ -137,9 +150,9 @@ const awards: {
 					확보
 				</li>
 				<li>
-					<strong>[AI 도구 활용]</strong> Claude Code CLI 기반 Harness Engineering 구조를
-					설계하고, AI 생성 코드를 사람이 직접 검증하는 HITL 게이트 및 컴파일 피드백 루프를
-					구축하여 통제 가능한 분업 환경 구현
+					<strong>[AI 도구 활용]</strong> Claude Code 기반 AI 협업 환경을 설정 — agent·skills
+					정의와 컨벤션 문서를 정리해 AI 생성 코드의 일관성을 확보하고, 사람이 직접 검증하는
+					단계를 두어 통제
 				</li>
 				<li>
 					<strong>[인프라 구축]</strong> AWS EC2·RDS 기반 서버 아키텍처 설계 및 배포를 완료하고,
@@ -195,6 +208,7 @@ const awards: {
 			}
 		</div>
 	</CVSection>
+	</div>
 
 	{/* Lightbox for award photos */}
 	<dialog
@@ -233,7 +247,64 @@ const awards: {
 	</dialog>
 </PageLayout>
 
+<style>
+	@media print {
+		/* 네비게이션 헤더, 푸터 등 CV 외 요소 숨김 */
+		:global(#main-header),
+		:global(footer) {
+			display: none !important;
+		}
+
+		/* 본문 여백/너비 초기화 → 인쇄 페이지를 꽉 채우도록 */
+		:global(body) {
+			max-width: none !important;
+			padding-top: 0 !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		:global(main) {
+			margin: 0 !important;
+		}
+
+		/* 라이트박스 다이얼로그는 인쇄에서 제외 */
+		#award-lightbox {
+			display: none !important;
+		}
+
+		/* PDF 저장 버튼은 인쇄물에서 제외 (print:hidden 에만 의존하지 않음) */
+		#cv-print {
+			display: none !important;
+		}
+
+		/* 개별 이력 항목(CVEntry)만 페이지 중간에서 쪼개지지 않게 — 섹션 전체엔 avoid 금지
+		   (한 페이지보다 큰 섹션에 avoid를 걸면 통째로 다음 페이지로 밀려 거대 공백 발생) */
+		:global(article) {
+			break-inside: avoid;
+		}
+
+		/* 섹션 제목(h2)이 페이지 하단에 혼자 남지 않게 */
+		:global(section > h2) {
+			break-after: avoid;
+		}
+
+		/* PDF 제출용 — 색은 잉크 절약을 위해 검정 유지하되, 논문·repo 링크가
+		   링크임을 알 수 있게 밑줄은 유지 */
+		:global(a) {
+			color: #000 !important;
+			text-decoration: underline !important;
+		}
+	}
+
+	@page {
+		margin: 16mm;
+	}
+</style>
+
 <script>
+	const printBtn = document.getElementById("cv-print");
+	printBtn?.addEventListener("click", () => window.print());
+
 	const dialog = document.getElementById("award-lightbox") as HTMLDialogElement | null;
 	const img = document.getElementById("award-lightbox-img") as HTMLImageElement | null;
 	const closeBtn = document.getElementById("award-lightbox-close");
