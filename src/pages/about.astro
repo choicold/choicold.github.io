@@ -180,14 +180,16 @@ const awards: {
 					<div>
 						<p class="text-accent-2 text-sm font-semibold">
 							{award.photo ? (
-								<button
-									type="button"
+								<a
 									class="cactus-link cursor-pointer text-left"
+									href={award.photo.src}
 									data-award-photo={award.photo.src}
 									data-award-alt={award.photo.alt}
+									rel="noreferrer"
+									target="_blank"
 								>
 									{award.title}
-								</button>
+								</a>
 							) : (
 								award.title
 							)}
@@ -311,8 +313,11 @@ const awards: {
 	const xBtn = document.getElementById("award-lightbox-x");
 
 	if (dialog && img) {
-		for (const btn of document.querySelectorAll<HTMLButtonElement>("[data-award-photo]")) {
-			btn.addEventListener("click", () => {
+		for (const btn of document.querySelectorAll<HTMLAnchorElement>("[data-award-photo]")) {
+			btn.addEventListener("click", (e) => {
+				// 화면에서는 라이트박스로 띄움. PDF(JS 미작동)에서는 href가 그대로 작동해
+				// 사진 URL로 이동 → 논문 링크와 동일하게 클릭 가능
+				e.preventDefault();
 				img.src = btn.dataset.awardPhoto ?? "";
 				img.alt = btn.dataset.awardAlt ?? "";
 				dialog.showModal();
