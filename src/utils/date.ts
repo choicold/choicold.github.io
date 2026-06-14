@@ -16,8 +16,11 @@ export function getFormattedDate(
 }
 
 export function collectionDateSort(
-	a: CollectionEntry<"post" | "note">,
-	b: CollectionEntry<"post" | "note">,
+	a: CollectionEntry<"post" | "wiki">,
+	b: CollectionEntry<"post" | "wiki">,
 ) {
-	return b.data.publishDate.getTime() - a.data.publishDate.getTime();
+	// wiki는 publishDate가 선택값이라 없으면 0(가장 과거)으로 취급
+	const aTime = a.data.publishDate?.getTime() ?? 0;
+	const bTime = b.data.publishDate?.getTime() ?? 0;
+	return bTime - aTime;
 }

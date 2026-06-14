@@ -9,10 +9,13 @@ import type { SiteMeta } from "@/types";
 
 interface Props {
 	meta: SiteMeta;
+	/** 본문 최대 폭 Tailwind 클래스. 기본은 좁은 글 폭(max-w-3xl). 위키처럼 사이드바+본문 2단이 필요하면 넓게 넘긴다. */
+	widthClass?: string;
 }
 
 const {
 	meta: { articleDate, description = siteConfig.description, ogImage, title },
+	widthClass = "max-w-3xl",
 } = Astro.props;
 ---
 
@@ -22,7 +25,10 @@ const {
 		<ThemeProvider />
 	</head>
 	<body
-		class="bg-global-bg text-global-text mx-auto flex min-h-screen max-w-3xl flex-col px-4 pt-16 font-mono text-sm font-normal antialiased sm:px-8"
+		class:list={[
+			"bg-global-bg text-global-text mx-auto flex min-h-screen flex-col px-4 pt-16 font-mono text-sm font-normal antialiased sm:px-8",
+			widthClass,
+		]}
 	>
 		<SkipLink />
 		<Header />

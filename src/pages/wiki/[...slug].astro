@@ -1,0 +1,55 @@
+---
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import FormattedDate from "@/components/FormattedDate.astro";
+import { getCategory } from "@/data/wiki";
+import WikiLayout from "@/layouts/Wiki.astro";
+
+export const getStaticPaths = (async () => {
+	const all = await getCollection("wiki");
+	return all.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}) satisfies GetStaticPaths;
+
+export type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const category = getCategory(entry);
+const displayDate = entry.data.updatedDate ?? entry.data.publishDate;
+
+const meta = {
+	description: entry.data.description || `${category} — ${entry.data.title}`,
+	title: entry.data.title,
+};
+---
+
+<WikiLayout currentId={entry.id} meta={meta}>
+	<article data-pagefind-body>
+		<nav aria-label="Breadcrumb" class="text-muted mb-4 text-xs">
+			<a class="hover:text-link" href="/wiki/">Wiki</a>
+			<span aria-hidden="true"> / </span>
+			<span>{category}</span>
+		</nav>
+
+		<h1 class="title mb-2">{entry.data.title}</h1>
+
+		{
+			displayDate && (
+				<p class="text-muted mb-6 text-xs">
+					{entry.data.updatedDate ? "갱신 " : ""}
+					<FormattedDate
+						date={displayDate}
+						dateTimeOptions={{ year: "numeric", month: "short", day: "numeric" }}
+					/>
+				</p>
+			)
+		}
+
+		<div class="prose prose-sm prose-cactus mt-4 max-w-none">
+			<Content />
+		</div>
+	</article>
+</WikiLayout>

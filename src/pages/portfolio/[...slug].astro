@@ -1,0 +1,83 @@
+---
+import { getCollection, render } from "astro:content";
+import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import { Icon } from "astro-icon/components";
+import TOC from "@/components/blog/TOC.astro";
+import PageLayout from "@/layouts/Base.astro";
+
+export const getStaticPaths = (async () => {
+	const entries = await getCollection("portfolio");
+	return entries.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}) satisfies GetStaticPaths;
+
+type Props = InferGetStaticPropsType<typeof getStaticPaths>;
+
+const { entry } = Astro.props;
+const { Content, headings } = await render(entry);
+
+const meta = {
+	description: entry.data.description,
+	title: entry.data.title,
+};
+---
+
+<PageLayout meta={meta}>
+	<article class="grow break-words" data-pagefind-body>
+		<nav aria-label="Breadcrumb" class="text-muted mb-4 text-xs">
+			<a class="hover:text-link" href="/portfolio/">Portfolio</a>
+			<span aria-hidden="true"> / </span>
+			<span>{entry.data.title}</span>
+		</nav>
+
+		<header class="mb-10">
+			<div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+				<div class="flex items-center gap-x-2">
+					<h1 class="title">{entry.data.title}</h1>
+					{
+						entry.data.repoUrl && (
+							<a
+								class="text-muted hover:text-link inline-flex"
+								href={entry.data.repoUrl}
+								rel="noreferrer"
+								target="_blank"
+							>
+								<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:github" />
+								<span class="sr-only">{entry.data.title} GitHub 저장소</span>
+							</a>
+						)
+					}
+					{
+						entry.data.storeUrl && (
+							<a
+								class="text-muted hover:text-link inline-flex"
+								href={entry.data.storeUrl}
+								rel="noreferrer"
+								target="_blank"
+							>
+								<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:google-play" />
+								<span class="sr-only">{entry.data.title} Google Play 스토어</span>
+							</a>
+						)
+					}
+				</div>
+				<span class="text-muted text-xs">{entry.data.period}</span>
+			</div>
+			<p class="text-muted mt-3">{entry.data.description}</p>
+			<p class="mt-4 text-sm">
+				{entry.data.stack.join(" · ")} / {entry.data.team}, {entry.data.role}
+			</p>
+		</header>
+
+		<div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+			{!!headings.length && <TOC headings={headings} />}
+			<div
+				class="prose prose-sm prose-headings:font-semibold prose-headings:text-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-muted prose-headings:hover:before:text-accent sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none"
+			>
+				<Content />
+			</div>
+		</div>
+	</article>
+</PageLayout>

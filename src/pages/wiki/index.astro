@@ -1,0 +1,53 @@
+---
+import { Icon } from "astro-icon/components";
+import { getWikiByCategory } from "@/data/wiki";
+import WikiLayout from "@/layouts/Wiki.astro";
+
+const tree = await getWikiByCategory();
+
+const meta = {
+	description: "공식문서와 소스코드를 기반으로 내용을 기록하고 정리하는 위키",
+	title: "Wiki",
+};
+---
+
+<WikiLayout meta={meta}>
+	<section>
+		<h1 class="title mb-4 flex items-center gap-3">
+			Wiki <a class="text-accent" href="/wiki/rss.xml" target="_blank">
+				<span class="sr-only">RSS feed</span>
+				<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name="mdi:rss" />
+			</a>
+		</h1>
+		<p class="text-muted mb-10">
+			공식문서를 보고 기능을 구현하며 파악한 옵션과, 그것을 어떤 비즈니스 로직에 왜 썼는지를
+			주제(폴더)별로 정리합니다.
+		</p>
+
+		{
+			tree.length === 0 ? (
+				<p class="text-muted">아직 작성된 위키 글이 없습니다.</p>
+			) : (
+				<div class="space-y-8">
+					{tree.map(([category, entries]) => (
+						<div>
+							<h2 class="text-accent-2 mb-3 text-lg font-semibold">{category}</h2>
+							<ul class="space-y-2">
+								{entries.map((entry) => (
+									<li>
+										<a class="cactus-link" href={`/wiki/${entry.id}/`}>
+											{entry.data.title}
+										</a>
+										{entry.data.description && (
+											<span class="text-muted"> — {entry.data.description}</span>
+										)}
+									</li>
+								))}
+							</ul>
+						</div>
+					))}
+				</div>
+			)
+		}
+	</section>
+</WikiLayout>

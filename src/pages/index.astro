@@ -1,9 +1,9 @@
 ---
 import { type CollectionEntry, getCollection } from "astro:content";
 import PostPreview from "@/components/blog/PostPreview.astro";
-import Note from "@/components/note/Note.astro";
 import PostHeatmap from "@/components/PostHeatmap.astro";
 import { getAllPosts } from "@/data/post";
+import { getCategory } from "@/data/wiki";
 import PageLayout from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
 
@@ -25,12 +25,12 @@ const pinnedPosts = allPostsByDate
 	.take(MAX_PINNED_POSTS)
 	.toArray();
 
-// Notes, set to a max of 5
-const MAX_NOTES = 5;
-const allNotes = await getCollection("note");
-const latestNotes = allNotes
+// Wiki, set to a max of 5 (최근 갱신/작성 순)
+const MAX_WIKI = 5;
+const allWiki = await getCollection("wiki");
+const latestWiki = allWiki
 	.sort(collectionDateSort)
-	.slice(0, MAX_NOTES) as CollectionEntry<"note">[];
+	.slice(0, MAX_WIKI) as CollectionEntry<"wiki">[];
 ---
 
 <PageLayout meta={{ title: "Home" }}>
@@ -85,15 +85,18 @@ const latestNotes = allNotes
 		</ul>
 	</section>
 	{
-		latestNotes.length > 0 && (
+		latestWiki.length > 0 && (
 			<section class="mt-16">
 				<h2 class="title text-accent mb-6 text-xl">
-					<a href="/notes/">Notes</a>
+					<a href="/wiki/">Wiki</a>
 				</h2>
-				<ul class="space-y-6" role="list">
-					{latestNotes.map((note) => (
-						<li>
-							<Note note={note} as="h3" isPreview />
+				<ul class="space-y-3" role="list">
+					{latestWiki.map((entry) => (
+						<li class="grid gap-1 sm:grid-cols-[8rem_1fr]">
+							<span class="text-muted text-xs">{getCategory(entry)}</span>
+							<a class="cactus-link" href={`/wiki/${entry.id}/`}>
+								{entry.data.title}
+							</a>
 						</li>
 					))}
 				</ul>

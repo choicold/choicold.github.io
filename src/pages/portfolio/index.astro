@@ -1,0 +1,73 @@
+---
+import { getCollection } from "astro:content";
+import { Icon } from "astro-icon/components";
+import PageLayout from "@/layouts/Base.astro";
+
+const projects = await getCollection("portfolio");
+const sortedProjects = projects.sort(
+	(a, b) => a.data.order - b.data.order || a.data.title.localeCompare(b.data.title),
+);
+
+const meta = {
+	description: "CV 프로젝트에서 다룬 문제와 기술적 의사결정을 정리한 포트폴리오",
+	title: "Portfolio",
+};
+---
+
+<PageLayout meta={meta}>
+	<div class="mb-12">
+		<h1 class="title">Portfolio</h1>
+	</div>
+
+	<ul class="space-y-8" role="list">
+		{
+			sortedProjects.map((project) => (
+				<li>
+					<article class="border-accent-2/15 rounded-md border p-4">
+						<div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
+							<div class="flex items-center gap-x-2">
+								<h2 class="title text-accent-2 text-lg">
+									<a class="cactus-link" href={`/portfolio/${project.id}/`}>
+										{project.data.title}
+									</a>
+								</h2>
+								{project.data.repoUrl && (
+									<a
+										class="text-muted hover:text-link inline-flex"
+										href={project.data.repoUrl}
+										rel="noreferrer"
+										target="_blank"
+									>
+										<Icon aria-hidden="true" class="h-5 w-5" focusable="false" name="mdi:github" />
+										<span class="sr-only">{project.data.title} GitHub 저장소</span>
+									</a>
+								)}
+								{project.data.storeUrl && (
+									<a
+										class="text-muted hover:text-link inline-flex"
+										href={project.data.storeUrl}
+										rel="noreferrer"
+										target="_blank"
+									>
+										<Icon
+											aria-hidden="true"
+											class="h-5 w-5"
+											focusable="false"
+											name="mdi:google-play"
+										/>
+										<span class="sr-only">{project.data.title} Google Play 스토어</span>
+									</a>
+								)}
+							</div>
+							<span class="text-muted text-xs">{project.data.period}</span>
+						</div>
+						<p class="text-muted mt-2">{project.data.description}</p>
+						<p class="mt-3 text-sm">
+							{project.data.stack.join(" · ")} / {project.data.team}, {project.data.role}
+						</p>
+					</article>
+				</li>
+			))
+		}
+	</ul>
+</PageLayout>

@@ -59,157 +59,145 @@ const awards: {
 	</div>
 
 	<div id="cv-document">
-	<header class="mb-4 flex flex-wrap items-end justify-between gap-4">
-		<div>
-			<h1 class="title mb-1">최한기</h1>
-			<p class="text-muted">Software Engineer · Backend Developer</p>
-		</div>
-		<SocialList showLabel={false} />
-	</header>
+		<header class="mb-4 flex flex-wrap items-end justify-between gap-4">
+			<div>
+				<h1 class="title mb-1">최한기</h1>
+				<p class="text-muted">Software Engineer · Backend Developer</p>
+			</div>
+			<SocialList showLabel={false} />
+		</header>
 
-	<CVSection title="Introduce">
-		<div class="prose prose-sm prose-cactus max-w-none">
-			<p>
-				안녕하세요, 추측보다는 데이터를 기반으로 한 판단을 중시하는 개발자
-				<strong>최한기</strong>입니다.
-			</p>
-			<p>
-				백엔드 엔지니어링과 데이터베이스 설계에 관심이 많으며, 문제를 해결할 때 지표를 먼저
-				측정하고 그 결과를 근거로 의사결정을 내리는 방식을 지향합니다. 뉴스 검색 쿼리의 병목을
-				측정해 인덱스 전환으로 실행 속도를 약 37배 단축하거나, 마스터 데이터 커버리지를
-				수치로 검증해 불필요한 LLM 파이프라인 도입을 기각하는 등 측정 기반의 선택을 쌓아가고
-				있습니다.
-			</p>
-		</div>
-	</CVSection>
+		<CVSection title="Introduce">
+			<div class="prose prose-sm prose-cactus max-w-none">
+				<p>
+					안녕하세요, 추측보다는 데이터를 기반으로 한 판단을 중시하는 개발자
+					<strong>최한기</strong>입니다.
+				</p>
+				<p>
+					백엔드 엔지니어링과 데이터베이스 설계에 관심이 많으며, 문제를 해결할 때 지표를 먼저
+					측정하고 그 결과를 근거로 의사결정을 내리는 방식을 지향합니다. 뉴스 검색 쿼리의 병목을
+					측정해 인덱스 전환으로 실행 속도를 약 37배 단축하거나, 마스터 데이터 커버리지를 수치로
+					검증해 불필요한 LLM 파이프라인 도입을 기각하는 등 측정 기반의 선택을 쌓아가고 있습니다.
+				</p>
+			</div>
+		</CVSection>
 
-	<CVSection title="Skills">
-		<div class="space-y-4">
-			{
-				skillGroups.map((group) => (
-					<div>
-						<h3 class="text-accent-2 mb-2 text-base font-semibold">{group.label}</h3>
-						<ul class="flex flex-wrap gap-2">
-							{group.items.map((item) => (
-								<li class="border-accent-2/15 text-muted rounded-md border px-2.5 py-1 text-xs">
-									{item}
-								</li>
-							))}
-						</ul>
-					</div>
-				))
-			}
-		</div>
-	</CVSection>
+		<CVSection title="Skills">
+			<div class="space-y-4">
+				{
+					skillGroups.map((group) => (
+						<div>
+							<h3 class="text-accent-2 mb-2 text-base font-semibold">{group.label}</h3>
+							<ul class="flex flex-wrap gap-2">
+								{group.items.map((item) => (
+									<li class="border-accent-2/15 text-muted rounded-md border px-2.5 py-1 text-xs">
+										{item}
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</div>
+		</CVSection>
 
-	<CVSection title="Projects">
-		<CVEntry
-			title="Brief"
-			storeUrl="https://play.google.com/store/apps/details?id=com.swyp.brife&hl="
-			repoUrl="https://github.com/swyp-app-4/Brief"
-			subtitle="네이버 뉴스 스크래핑 및 LLM 프롬프팅을 활용한 관심사 기반 카테고리별 통합 요약 앱"
-			period="2026.02 ~ 2026.04"
-			tags={["spring-boot", "postgresql", "jpa", "llm", "openapi"]}
-		>
-			<ul>
-				<li>
-					<strong>[성능 개선]</strong> 뉴스 검색 쿼리의 Seq Scan 문제를 pg_trgm GIN 인덱스로
-					전환하여 외부 검색엔진 도입 없이 실행 속도를 93ms에서 2.5ms로 약 37배 단축
-				</li>
-				<li>
-					<strong>[쿼리 최적화]</strong> 검색 결과 조회 시 Slice로 count 쿼리를 회피하고,
-					카테고리 균형 홈피드는 Window Function을 활용해 단일 쿼리로 최적화
-				</li>
-				<li>
-					<strong>[DB 재설계]</strong> 온보딩 선택·파이프라인 입력·Topic 부모 3가지 책임이
-					혼재된 단일 Category 테이블을 category_group과 category로 분리하여 FK 정합성 확보 및
-					도메인 결합도 감소
-				</li>
-				<li>
-					<strong>[협업 방식]</strong> OpenAPI 3.0 명세 기반의 API 설계로 프론트엔드와 협업
-				</li>
-			</ul>
-		</CVEntry>
+		<CVSection title="Projects">
+			<CVEntry
+				title="Brief"
+				storeUrl="https://play.google.com/store/apps/details?id=com.swyp.brife&hl="
+				repoUrl="https://github.com/swyp-app-4/Brief"
+				subtitle="네이버 뉴스 스크래핑 및 LLM 프롬프팅을 활용한 관심사 기반 카테고리별 통합 요약 앱"
+				period="2026.02 ~ 2026.04"
+				tags={["spring-boot", "postgresql", "jpa", "llm", "openapi"]}
+			>
+				<p class="text-muted mt-3 text-sm">[역할 / 팀 규모]: 검색, DB 담당 / 9인 팀</p>
+				<ul>
+					<li>
+						<strong>[성능 개선]</strong> 뉴스 약 1.6만 건 기준 pg_trgm GIN 전환, 93ms→2.5ms (EXPLAIN ANALYZE,
+						약 37배)
+					</li>
+					<li>
+						<strong>[쿼리·DB 최적화]</strong> 검색 Slice 적용과 홈피드 Window Function 단일 쿼리화, Category
+						테이블 분리로 FK 정합성 확보
+					</li>
+					<li>
+						<strong>[백엔드 기반 설계]</strong> ERD 초안·API 초안·개발환경 세팅을 담당하고 검색 기능 구현
+					</li>
+				</ul>
+			</CVEntry>
 
-		<CVEntry
-			title="KeepEat"
-			repoUrl="https://github.com/KeepEatSSU/KeepEat/tree/BE"
-			subtitle="1인 가구를 위한 식재료 소비기한·재고 관리 및 보유 식재료 기반 AI 맞춤 레시피 추천 앱"
-			period="2026.03 ~ 진행 중"
-			tags={["spring-boot", "postgresql", "aws", "docker", "github-actions", "llm"]}
-		>
-			<ul>
-				<li>
-					<strong>[도메인 모델링]</strong> 가정 식재료 도메인을 10개 대분류·49개 중분류·611개
-					품목으로 체계화하고, JSON 기반 보관 기간 스키마를 설계하여 소비기한 계산 로직 일반화
-				</li>
-				<li>
-					<strong>[데이터 기반 의사결정]</strong> 마켓컬리·이마트몰 210개 상품 샘플링으로 자체
-					마스터 식재료 DB의 시중 데이터 커버리지가 82%임을 측정, 이를 근거로 미등록 식재료의
-					LLM 자동분류 파이프라인 도입을 기각하고 사용자 커스텀 등록으로 우회하여 데이터 무결성
-					확보
-				</li>
-				<li>
-					<strong>[AI 도구 활용]</strong> Claude Code 기반 AI 협업 환경을 설정 — agent·skills
-					정의와 컨벤션 문서를 정리해 AI 생성 코드의 일관성을 확보하고, 사람이 직접 검증하는
-					단계를 두어 통제
-				</li>
-				<li>
-					<strong>[인프라 구축]</strong> AWS EC2·RDS 기반 서버 아키텍처 설계 및 배포를 완료하고,
-					GitHub Actions를 연동하여 CI/CD 파이프라인 구축
-				</li>
-			</ul>
-		</CVEntry>
-	</CVSection>
+			<CVEntry
+				title="KeepEat"
+				repoUrl="https://github.com/KeepEatSSU/KeepEat/tree/BE"
+				subtitle="1인 가구를 위한 식재료 소비기한·재고 관리 및 보유 식재료 기반 AI 맞춤 레시피 추천 앱"
+				period="2026.03 ~ 진행 중"
+				tags={["spring-boot", "postgresql", "aws", "docker", "github-actions", "llm"]}
+			>
+				<p class="text-muted mt-3 text-sm">
+					[역할 / 팀 규모]: 식재료 CRUD, 인프라 담당 / FE 1명, BE 3명
+				</p>
+				<ul>
+					<li>
+						<strong>[도메인 모델링]</strong> 약 36만 개 레시피 식재료명 기반 10대분류·49중분류·611품목
+						마스터 DB 설계
+					</li>
+					<li>
+						<strong>[데이터 기반 의사결정]</strong> 컬리·SSG 450개 SKU 기준 82.0% 커버리지 측정, LLM 자동분류
+						대신 사용자 커스텀 등록으로 결정
+					</li>
+					<li>
+						<strong>[인프라 구축]</strong> AWS EC2·RDS 기반 서버 아키텍처 설계·배포 및 GitHub Actions
+						CI/CD 파이프라인 구축
+					</li>
+				</ul>
+			</CVEntry>
+		</CVSection>
 
-	<CVSection title="Education">
-		<CVEntry
-			title="숭실대학교 소프트웨어학부 학사 (졸업예정)"
-			period="2021.03 ~ 2027.02"
-		>
-			<ul>
-				<li>GPA 3.6 / 4.5</li>
-			</ul>
-		</CVEntry>
-	</CVSection>
+		<CVSection title="Education">
+			<CVEntry title="숭실대학교 소프트웨어학부 학사 (졸업예정)" period="2021.03 ~ 2027.02">
+				<ul>
+					<li>GPA 3.6 / 4.5</li>
+				</ul>
+			</CVEntry>
+		</CVSection>
 
-	<CVSection title="ETC">
-		<div class="space-y-4">
-			{
-				awards.map((award) => (
-					<div>
-						<p class="text-accent-2 text-sm font-semibold">
-							{award.photo ? (
-								<a
-									class="cactus-link cursor-pointer text-left"
-									href={award.photo.src}
-									data-award-photo={award.photo.src}
-									data-award-alt={award.photo.alt}
-									rel="noreferrer"
-									target="_blank"
-								>
-									{award.title}
-								</a>
-							) : (
-								award.title
-							)}
-						</p>
-						<p class="text-muted mt-1 text-sm">
-							{award.org}
-							{" — "}
-							{award.paper ? (
-								<a class="cactus-link" href={award.paper.url} rel="noreferrer" target="_blank">
-									"{award.paper.title}"
-								</a>
-							) : (
-								award.suffix
-							)}
-						</p>
-					</div>
-				))
-			}
-		</div>
-	</CVSection>
+		<CVSection title="ETC">
+			<div class="space-y-4">
+				{
+					awards.map((award) => (
+						<div>
+							<p class="text-accent-2 text-sm font-semibold">
+								{award.photo ? (
+									<a
+										class="cactus-link cursor-pointer text-left"
+										href={award.photo.src}
+										data-award-photo={award.photo.src}
+										data-award-alt={award.photo.alt}
+										rel="noreferrer"
+										target="_blank"
+									>
+										{award.title}
+									</a>
+								) : (
+									award.title
+								)}
+							</p>
+							<p class="text-muted mt-1 text-sm">
+								{award.org}
+								{" — "}
+								{award.paper ? (
+									<a class="cactus-link" href={award.paper.url} rel="noreferrer" target="_blank">
+										"{award.paper.title}"
+									</a>
+								) : (
+									award.suffix
+								)}
+							</p>
+						</div>
+					))
+				}
+			</div>
+		</CVSection>
 	</div>
 
 	{/* Lightbox for award photos */}
@@ -234,8 +222,8 @@ const awards: {
 				class="h-5 w-5"
 				aria-hidden="true"
 			>
-				<line x1="18" y1="6" x2="6" y2="18" />
-				<line x1="6" y1="6" x2="18" y2="18" />
+				<line x1="18" y1="6" x2="6" y2="18"></line>
+				<line x1="6" y1="6" x2="18" y2="18"></line>
 			</svg>
 		</button>
 		<button

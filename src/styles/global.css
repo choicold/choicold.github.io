@@ -138,4 +138,10 @@
 	--tw-prose-links: var(--color-global-text);
 	--tw-prose-quotes: var(--color-quote);
 	--tw-prose-th-borders: #666;
+
+	/* 링크 밑줄을 글자에서 띄워, pg_trgm 같이 "_"가 든 텍스트에서 밑줄과 언더스코어가
+	   겹쳐 보이는 문제를 방지 */
+	& a {
+		text-underline-offset: 3px;
+	}
 }

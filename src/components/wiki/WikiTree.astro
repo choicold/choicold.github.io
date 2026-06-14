@@ -1,0 +1,40 @@
+---
+import { getWikiTree, type WikiTreeNode } from "@/data/wiki";
+
+interface Props {
+	/** 현재 보고 있는 위키 글의 id (예: "Spring/data/jpa-n-plus-1"). 목록 페이지에선 undefined. */
+	currentId?: string | undefined;
+	/** 재귀 호출용 — 외부에서 처음 부를 땐 생략(루트를 getWikiTree로 가져옴). */
+	nodes?: WikiTreeNode[] | undefined;
+}
+
+const { currentId } = Astro.props;
+const nodes = Astro.props.nodes ?? (await getWikiTree());
+---
+
+<ul class="space-y-1.5">
+	{
+		nodes.map((node) =>
+			node.type === "folder" ? (
+				<li>
+					<details open>
+						<summary class="text-accent-2 cursor-pointer font-semibold">{node.name}</summary>
+						<div class="border-accent-2/20 mt-1.5 ms-2 border-s ps-3">
+							<Astro.self currentId={currentId} nodes={node.children} />
+						</div>
+					</details>
+				</li>
+			) : (
+				<li>
+					<a
+						aria-current={node.entry.id === currentId ? "page" : false}
+						class="text-muted hover:text-link aria-[current=page]:text-link aria-[current=page]:font-semibold"
+						href={`/wiki/${node.entry.id}/`}
+					>
+						{node.name}
+					</a>
+				</li>
+			),
+		)
+	}
+</ul>
