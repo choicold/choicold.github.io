@@ -59,12 +59,19 @@ const awards: {
 	</div>
 
 	<div id="cv-document">
-		<header class="mb-4 flex flex-wrap items-end justify-between gap-4">
+		<header class="relative mb-4 pr-28">
 			<div>
-				<h1 class="title mb-1">최한기</h1>
+				<div class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+					<h1 class="title">최한기</h1>
+					<SocialList showLabel={false} />
+				</div>
 				<p class="text-muted">Software Engineer · Backend Developer</p>
 			</div>
-			<SocialList showLabel={false} />
+			<img
+				src="/face.jpg"
+				alt="최한기 프로필 사진"
+				class="absolute top-0 right-0 h-28 w-24 rounded-md object-cover"
+			/>
 		</header>
 
 		<CVSection title="Introduce">
@@ -110,7 +117,9 @@ const awards: {
 				period="2026.02 ~ 2026.04"
 				tags={["spring-boot", "postgresql", "jpa", "llm", "openapi"]}
 			>
-				<p class="text-muted mt-3 text-sm">[역할 / 팀 규모]: 검색, DB 담당 / 9인 팀</p>
+				<p class="text-muted mt-3 text-sm">
+					[역할 / 팀 규모]: 검색, DB 담당 / 9인 팀(PM 1명, DE 3명, FE 1명, BE 4명)
+				</p>
 				<ul>
 					<li>
 						<strong>[성능 개선]</strong> 뉴스 약 1.6만 건 기준 pg_trgm GIN 전환, 93ms→2.5ms (EXPLAIN ANALYZE,
