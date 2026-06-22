@@ -25,7 +25,18 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<article class="grow break-words" data-pagefind-body>
+	<div class="mb-4 flex justify-end print:hidden">
+		<button
+			type="button"
+			id="portfolio-print"
+			class="border-accent-2/30 text-muted hover:text-link inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs"
+		>
+			<Icon aria-hidden="true" class="h-4 w-4" focusable="false" name="mdi:file-pdf-box" />
+			PDF로 저장
+		</button>
+	</div>
+
+	<article id="portfolio-document" class="grow break-words" data-pagefind-body>
 		<nav aria-label="Breadcrumb" class="text-muted mb-4 text-xs">
 			<a class="hover:text-link" href="/portfolio/">Portfolio</a>
 			<span aria-hidden="true"> / </span>
@@ -81,3 +92,44 @@ const meta = {
 		</div>
 	</article>
 </PageLayout>
+
+<style>
+	@media print {
+		:global(#main-header),
+		:global(footer),
+		#portfolio-print,
+		:global(nav[aria-label="Breadcrumb"]),
+		:global(details) {
+			display: none !important;
+		}
+
+		:global(body) {
+			max-width: none !important;
+			padding-top: 0 !important;
+			background: #fff !important;
+			color: #000 !important;
+		}
+
+		:global(main) {
+			margin: 0 !important;
+		}
+
+		#portfolio-document {
+			margin: 0;
+		}
+
+		:global(a) {
+			color: #000 !important;
+			text-decoration: underline !important;
+		}
+	}
+
+	@page {
+		margin: 16mm;
+	}
+</style>
+
+<script>
+	const printBtn = document.getElementById("portfolio-print");
+	printBtn?.addEventListener("click", () => window.print());
+</script>
