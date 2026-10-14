@@ -28,6 +28,11 @@ const awards: {
 	title: string;
 }[] = [
 	{
+		title: "제16회 숭실 캡스톤디자인 경진대회 / 장려상 (2026)",
+		org: "숭실대학교",
+		suffix: "식재료 소비기한 관리와 AI 맞춤 레시피를 추천하는 서비스 KeepEat 개발",
+	},
+	{
 		title: "HMG 소프티어 8기 / 소프티어 챌린지 상 (2026)",
 		org: "현대자동차그룹 ICT본부",
 		suffix: "흩어진 여행 콘텐츠를 지도에 모아 함께 저장하는 서비스 mapin 개발",
@@ -186,7 +191,7 @@ const awards: {
 			</CVEntry>
 		</CVSection>
 
-		<CVSection title="ETC">
+		<CVSection title="Awards">
 			<div class="space-y-4">
 				{
 					awards.map((award) => (
@@ -209,7 +214,7 @@ const awards: {
 							</p>
 							<p class="text-muted mt-1 text-sm">
 								{award.org}
-								{" — "}
+								{(award.paper || award.suffix) && " — "}
 								{award.paper ? (
 									<a class="cactus-link" href={award.paper.url} rel="noreferrer" target="_blank">
 										"{award.paper.title}"
