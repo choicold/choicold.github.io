@@ -1,5 +1,4 @@
 ---
-import { Icon } from "astro-icon/components";
 import CVEntry from "@/components/cv/CVEntry.astro";
 import CVSection from "@/components/cv/CVSection.astro";
 import SocialList from "@/components/SocialList.astro";
@@ -29,6 +28,11 @@ const awards: {
 	title: string;
 }[] = [
 	{
+		title: "HMG 소프티어 8기 / 소프티어 챌린지 상 (2026)",
+		org: "현대자동차그룹 ICT본부",
+		suffix: "흩어진 여행 콘텐츠를 지도에 모아 함께 저장하는 서비스 mapin 개발",
+	},
+	{
 		title: "ASK 2025 학부생 논문경진대회 / 금상 (2025)",
 		org: "한국정보처리학회",
 		paper: {
@@ -47,13 +51,12 @@ const awards: {
 ---
 
 <PageLayout meta={meta}>
-	<div class="mb-4 flex justify-end print:hidden">
+	<div class="relative print:hidden">
 		<button
 			type="button"
 			id="cv-print"
-			class="border-accent-2/30 text-muted hover:text-link inline-flex items-center gap-1.5 rounded-md border px-3 py-1.5 text-xs"
+			class="absolute right-0 bottom-2 z-10 rounded-md px-3 py-1.5 text-xs opacity-0"
 		>
-			<Icon aria-hidden="true" class="h-4 w-4" focusable="false" name="mdi:file-pdf-box" />
 			PDF로 저장
 		</button>
 	</div>
@@ -163,6 +166,11 @@ const awards: {
 		</CVSection>
 
 		<CVSection title="Experience">
+			<CVEntry title="이모션웨이브" inlineSubtitle="인턴" period="2026.09 ~ 현재">
+				<ul>
+					<li>AI Agent 개발</li>
+				</ul>
+			</CVEntry>
 			<CVEntry title="HMG SOFTEER BOOTCAMP 8기" period="2026.07 ~ 2026.08">
 				<ul>
 					<li>웹 백엔드 과정</li>
@@ -173,7 +181,7 @@ const awards: {
 		<CVSection title="Education">
 			<CVEntry title="숭실대학교 소프트웨어학부 학사 (졸업예정)" period="2021.03 ~ 2027.02">
 				<ul>
-					<li>GPA 3.6 / 4.5</li>
+					<li>GPA 3.73 / 4.5</li>
 				</ul>
 			</CVEntry>
 		</CVSection>
@@ -276,11 +284,6 @@ const awards: {
 
 		/* 라이트박스 다이얼로그는 인쇄에서 제외 */
 		#award-lightbox {
-			display: none !important;
-		}
-
-		/* PDF 저장 버튼은 인쇄물에서 제외 (print:hidden 에만 의존하지 않음) */
-		#cv-print {
 			display: none !important;
 		}
 

@@ -2,6 +2,7 @@
 import { Icon } from "astro-icon/components";
 
 interface Props {
+	inlineSubtitle?: string;
 	period?: string;
 	repoUrl?: string;
 	storeUrl?: string;
@@ -11,7 +12,7 @@ interface Props {
 	titleUrl?: string;
 }
 
-const { period, repoUrl, storeUrl, subtitle, tags, title, titleUrl } = Astro.props;
+const { inlineSubtitle, period, repoUrl, storeUrl, subtitle, tags, title, titleUrl } = Astro.props;
 ---
 
 <article class="mb-8 last:mb-0">
@@ -28,6 +29,7 @@ const { period, repoUrl, storeUrl, subtitle, tags, title, titleUrl } = Astro.pro
 					)
 				}
 			</h3>
+			{inlineSubtitle && <span class="text-muted text-sm">{inlineSubtitle}</span>}
 			{
 				repoUrl && (
 					<a
