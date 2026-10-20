@@ -12,14 +12,14 @@ interface Props {
 const { meta, currentId } = Astro.props;
 ---
 
-<Base meta={meta} widthClass="max-w-5xl">
-	<div class="sm:grid sm:grid-cols-[14rem_1fr] sm:gap-10">
-		<!-- 사이드바: 모바일에선 토글로 접힘, sm 이상에선 항상 보임 -->
-		<wiki-sidebar class="mb-8 block sm:mb-0">
+<Base meta={meta}>
+	<div class="lg:grid lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-6">
+		<!-- 사이드바: 좁은 화면에선 토글로 접힘, lg 이상에선 항상 보임 -->
+		<wiki-sidebar class="mb-8 block lg:mb-0">
 			<button
 				aria-controls="wiki-tree"
 				aria-expanded="false"
-				class="text-accent border-accent-2/30 mb-2 inline-flex w-full items-center justify-between rounded-md border px-3 py-2 font-semibold sm:hidden"
+				class="text-accent border-accent-2/30 mb-2 inline-flex w-full items-center justify-between rounded-md border px-3 py-2 font-semibold lg:hidden"
 				id="wiki-tree-toggle"
 				type="button"
 			>
@@ -28,7 +28,7 @@ const { meta, currentId } = Astro.props;
 			</button>
 			<nav
 				aria-label="Wiki tree"
-				class="border-accent-2/15 hidden rounded-md border p-4 text-sm sm:sticky sm:top-16 sm:block sm:max-h-[calc(100vh-5rem)] sm:overflow-y-auto sm:border-0 sm:p-0"
+				class="border-accent-2/15 hidden rounded-md border p-4 text-sm lg:sticky lg:top-16 lg:block lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto lg:border-0 lg:p-0"
 				id="wiki-tree"
 			>
 				<WikiTree currentId={currentId} />
