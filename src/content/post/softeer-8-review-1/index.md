@@ -3,10 +3,8 @@ title: "소프티어 8기 후기 (1)"
 publishDate: "2026-10-20"
 description: "소프티어 부트캠프 8기 지원부터 합격까지의 과정과 생각을 정리한 개인적인 후기입니다."
 tags: ["소프티어", "회고"]
-draft: true
+draft: false
 ---
-
-<!-- 작성 완료 후 publishDate를 실제 발행일로 수정하고 draft를 false로 변경합니다. -->
 
 ## 지원 계기
 

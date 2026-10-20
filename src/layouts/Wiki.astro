@@ -1,64 +1,14 @@
 ---
-import WikiTree from "@/components/wiki/WikiTree.astro";
 import Base from "@/layouts/Base.astro";
 import type { SiteMeta } from "@/types";
 
 interface Props {
 	meta: SiteMeta;
-	/** 현재 글 id — 사이드바에서 활성 항목 표시용. 목록 페이지에선 생략. */
-	currentId?: string | undefined;
 }
 
-const { meta, currentId } = Astro.props;
+const { meta } = Astro.props;
 ---
 
 <Base meta={meta}>
-	<div class="lg:grid lg:grid-cols-[11rem_minmax(0,1fr)] lg:gap-6">
-		<!-- 사이드바: 좁은 화면에선 토글로 접힘, lg 이상에선 항상 보임 -->
-		<wiki-sidebar class="mb-8 block lg:mb-0">
-			<button
-				aria-controls="wiki-tree"
-				aria-expanded="false"
-				class="text-accent border-accent-2/30 mb-2 inline-flex w-full items-center justify-between rounded-md border px-3 py-2 font-semibold lg:hidden"
-				id="wiki-tree-toggle"
-				type="button"
-			>
-				목차
-				<span aria-hidden="true">▾</span>
-			</button>
-			<nav
-				aria-label="Wiki tree"
-				class="border-accent-2/15 hidden rounded-md border p-4 text-sm lg:sticky lg:top-16 lg:block lg:max-h-[calc(100vh-5rem)] lg:overflow-y-auto lg:border-0 lg:p-0"
-				id="wiki-tree"
-			>
-				<WikiTree currentId={currentId} />
-			</nav>
-		</wiki-sidebar>
-
-		<!-- 본문 -->
-		<div class="min-w-0">
-			<slot />
-		</div>
-	</div>
+	<slot />
 </Base>
-
-<script>
-	import { toggleClass } from "@/utils/domElement";
-
-	class WikiSidebar extends HTMLElement {
-		#open = false;
-
-		connectedCallback() {
-			const btn = this.querySelector<HTMLButtonElement>("#wiki-tree-toggle");
-			const tree = this.querySelector<HTMLElement>("#wiki-tree");
-			btn?.addEventListener("click", () => {
-				if (!tree) return;
-				toggleClass(tree, "hidden");
-				this.#open = !this.#open;
-				btn.setAttribute("aria-expanded", this.#open.toString());
-			});
-		}
-	}
-
-	customElements.define("wiki-sidebar", WikiSidebar);
-</script>

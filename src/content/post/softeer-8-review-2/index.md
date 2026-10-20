@@ -3,10 +3,8 @@ title: "소프티어 8기 후기 (2)"
 publishDate: "2026-10-20"
 description: "소프티어 부트캠프 8기 입과 후 활동부터 면접까지의 경험과 생각을 정리한 개인적인 후기입니다."
 tags: ["소프티어", "회고"]
-draft: true
+draft: false
 ---
-
-<!-- 작성 완료 후 publishDate를 실제 발행일로 수정하고 draft를 false로 변경합니다. -->
 
 ## 입과와 교육
 

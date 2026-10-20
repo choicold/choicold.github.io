@@ -26,7 +26,7 @@ const meta = {
 };
 ---
 
-<WikiLayout currentId={entry.id} meta={meta}>
+<WikiLayout meta={meta}>
 	<article data-pagefind-body>
 		<nav aria-label="Breadcrumb" class="text-muted mb-4 text-xs">
 			<a class="hover:text-link" href="/wiki/">Wiki</a>
@@ -48,7 +48,7 @@ const meta = {
 			)
 		}
 
-		<div class="prose prose-sm prose-cactus mt-4 max-w-none">
+		<div class="prose prose-sm prose-cactus mt-4 max-w-none [&_table]:block [&_table]:overflow-x-auto [&_th]:min-w-20 [&_th]:whitespace-nowrap">
 			<Content />
 		</div>
 	</article>
