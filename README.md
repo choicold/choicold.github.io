@@ -49,6 +49,7 @@ npm run preview  # 빌드 결과 로컬 미리보기
 ## 글 작성
 
 `src/content/post/` 에 `.md` 또는 `.mdx` 파일을 추가하면 파일명이 URL slug가 됩니다.
+글의 프론트매터에 `category: "회고"` 또는 `category: "기술"`을 지정하면 Blog의 해당 폴더에 표시됩니다. 분류를 바꿔도 파일 경로를 유지하면 글 주소는 바뀌지 않습니다. 태그는 분류와 별도로 지정합니다.
 짧은 노트는 `src/content/note/` 에 추가합니다. 프론트매터 스키마는 `src/content.config.ts` 에 정의돼 있습니다.
 
 ## 배포

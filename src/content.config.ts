@@ -16,6 +16,7 @@ const post = defineCollection({
 	loader: glob({ base: "./src/content/post", pattern: "**/*.{md,mdx}" }),
 	schema: ({ image }) =>
 		baseSchema.extend({
+			category: z.enum(["회고", "기술"]),
 			description: z.string(),
 			coverImage: z
 				.object({

@@ -1,0 +1,138 @@
+---
+import { Icon } from "astro-icon/components";
+import PostPreview from "@/components/blog/PostPreview.astro";
+import { getAllPosts, getUniqueTags } from "@/data/post";
+import PageLayout from "@/layouts/Base.astro";
+import { collectionDateSort } from "@/utils/date";
+
+const allPosts = (await getAllPosts()).sort(collectionDateSort);
+const uniqueTags = getUniqueTags(allPosts).slice(0, 7);
+const folders = (["회고", "기술"] as const).map((category) => ({
+	category,
+	posts: allPosts.filter((post) => post.data.category === category),
+}));
+
+const meta = {
+	description: "경험을 돌아보는 회고와 공부한 기술을 정리하는 글",
+	title: "Posts",
+};
+---
+
+<PageLayout meta={meta}>
+ <div class="mb-12 flex items-center gap-3">
+  <h1 class="title">Posts</h1>
+  <a class="text-accent" href="/rss.xml" target="_blank">
+   <span class="sr-only">RSS feed</span>
+   <Icon aria-hidden="true" class="h-6 w-6" focusable="false" name="mdi:rss" />
+  </a>
+ </div>
+ <div class="grid gap-y-12 sm:grid-cols-[minmax(0,1fr)_9rem] sm:gap-x-8">
+  <div class="min-w-0">
+   {folders.map(({ category, posts }) => (
+    <details data-blog-folder data-expanded={posts.length > 0 ? "true" : "false"} class="group border-accent-2/15 border-b py-5 first:pt-0" open={posts.length > 0}>
+     <summary class="text-accent-2 hover:text-accent flex cursor-pointer list-none items-center gap-3 rounded-sm focus-visible:outline-2 focus-visible:outline-offset-4 [&::-webkit-details-marker]:hidden">
+      <Icon aria-hidden="true" class="text-accent h-5 w-5 shrink-0" focusable="false" name="mdi:folder-outline" />
+      <h2 class="text-lg font-semibold">{category}</h2>
+      <span class="text-muted text-xs">{posts.length}</span>
+      <Icon aria-hidden="true" class="text-muted ms-auto h-4 w-4 shrink-0 group-data-[expanded=true]:rotate-90 motion-safe:transition-transform motion-safe:duration-300" focusable="false" name="mdi:chevron-right" />
+     </summary>
+     {posts.length > 0 ? (
+      <ul class="border-accent-2/15 mt-6 ms-2.5 space-y-8 border-s ps-5" role="list">
+       {posts.map((post, index) => (
+        <li>
+         <PostPreview post={post} previousDate={posts[index - 1]?.data.publishDate} />
+        </li>
+       ))}
+      </ul>
+     ) : (
+      <p class="text-muted mt-5 ps-8 text-sm">아직 작성된 글이 없습니다.</p>
+     )}
+    </details>
+   ))}
+  </div>
+		{
+			!!uniqueTags.length && (
+				<aside>
+					<h2 class="title mb-4 flex items-center gap-1 text-lg">
+						<svg
+							aria-hidden="true"
+							class="h-6 w-6"
+							fill="none"
+							stroke="var(--color-muted)"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="1.5"
+							viewBox="0 0 24 24"
+							xmlns="http://www.w3.org/2000/svg"
+						>
+							<path d="M0 0h24v24H0z" fill="none" stroke="none" />
+							<path d="M7.859 6h-2.834a2.025 2.025 0 0 0 -2.025 2.025v2.834c0 .537 .213 1.052 .593 1.432l6.116 6.116a2.025 2.025 0 0 0 2.864 0l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-6.117 -6.116a2.025 2.025 0 0 0 -1.431 -.593z" />
+							<path d="M17.573 18.407l2.834 -2.834a2.025 2.025 0 0 0 0 -2.864l-7.117 -7.116" />
+							<path d="M6 9h-.01" />
+						</svg>
+						Tags
+					</h2>
+					<ul class="flex flex-wrap gap-2">
+						{uniqueTags.map((tag) => (
+							<li>
+								<a class="cactus-link flex items-center justify-center" href={`/tags/${tag}/`}>
+									<span aria-hidden="true">#</span>
+									<span class="sr-only">View all posts with the tag</span>
+									{tag}
+								</a>
+							</li>
+						))}
+					</ul>
+					<span class="mt-4 block sm:text-end">
+						<a class="hover:text-link" href="/tags/">
+							View all <span aria-hidden="true">→</span>
+							<span class="sr-only">blog tags</span>
+						</a>
+					</span>
+				</aside>
+			)
+		}
+	</div>
+</PageLayout>
+
+<script>
+ for (const folder of document.querySelectorAll<HTMLDetailsElement>("[data-blog-folder]")) {
+  const summary = folder.querySelector("summary");
+  if (!summary) continue;
+
+  let expanded = folder.open;
+  let animation: Animation | undefined;
+
+  summary.addEventListener("click", (event) => {
+   event.preventDefault();
+   const startHeight = folder.getBoundingClientRect().height;
+   animation?.cancel();
+   expanded = !expanded;
+   folder.dataset.expanded = String(expanded);
+
+   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+    folder.open = expanded;
+    folder.style.overflow = "";
+    return;
+   }
+
+   folder.open = true;
+   const style = getComputedStyle(folder);
+   const collapsedHeight = summary.getBoundingClientRect().height +
+    Number.parseFloat(style.paddingTop) + Number.parseFloat(style.paddingBottom) +
+    Number.parseFloat(style.borderTopWidth) + Number.parseFloat(style.borderBottomWidth);
+   const endHeight = expanded ? folder.getBoundingClientRect().height : collapsedHeight;
+   folder.style.overflow = "hidden";
+   animation = folder.animate(
+    { height: [`${startHeight}px`, `${endHeight}px`] },
+    { duration: 280, easing: "cubic-bezier(0.22, 1, 0.36, 1)", fill: "both" },
+   );
+   animation.onfinish = () => {
+    folder.open = expanded;
+    animation?.cancel();
+    animation = undefined;
+    folder.style.overflow = "";
+   };
+  });
+ }
+</script>
