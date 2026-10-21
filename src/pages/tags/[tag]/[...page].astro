@@ -68,9 +68,9 @@ const paginationProps = {
 	</div>
 	<ul class="space-y-8">
 		{
-			page.data.map((p) => (
+			page.data.map((p, index, posts) => (
 				<li>
-					<PostPreview as="h2" post={p} />
+					<PostPreview as="h2" post={p} previousDate={posts[index - 1]?.data.publishDate} />
 				</li>
 			))
 		}

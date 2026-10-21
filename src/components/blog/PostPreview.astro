@@ -2,20 +2,28 @@
 import type { CollectionEntry } from "astro:content";
 import type { HTMLTag, Polymorphic } from "astro/types";
 import FormattedDate from "@/components/FormattedDate.astro";
+import { getFormattedDate } from "@/utils/date";
 
 type Props<Tag extends HTMLTag> = Polymorphic<{ as: Tag }> & {
 	post: CollectionEntry<"post">;
+	previousDate?: Date | undefined;
 	withDesc?: boolean;
 };
 
-const { as: Tag = "div", post, withDesc = false } = Astro.props;
+const { as: Tag = "div", post, previousDate, withDesc = false } = Astro.props;
+const showDate =
+	!previousDate || getFormattedDate(previousDate) !== getFormattedDate(post.data.publishDate);
 ---
 
 <div class="min-w-0 space-y-2">
-	<div class="text-muted flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
-		<FormattedDate date={post.data.publishDate} />
-		{post.data.draft && <span class="border-accent-2/20 rounded border px-1.5 py-0.5">초안</span>}
-	</div>
+	{
+		(showDate || post.data.draft) && (
+			<div class="text-muted flex flex-wrap items-center gap-x-3 gap-y-1 text-xs">
+				{showDate && <FormattedDate date={post.data.publishDate} />}
+				{post.data.draft && <span class="border-accent-2/20 rounded border px-1.5 py-0.5">초안</span>}
+			</div>
+		)
+	}
 	<Tag class="text-base leading-relaxed font-semibold">
 		<a class="cactus-link" href={`/posts/${post.id}/`}>
 			{post.data.title}

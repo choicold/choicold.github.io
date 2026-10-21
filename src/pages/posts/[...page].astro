@@ -73,9 +73,9 @@ const descYearKeys = Object.keys(groupedByYear).sort((a, b) => +b - +a);
 					<section class="mb-16">
 						<h2 class="title mb-6 text-xl">Pinned Posts</h2>
 						<ul class="space-y-8" role="list">
-							{pinnedPosts.map((p) => (
+							{pinnedPosts.map((p, index, posts) => (
 								<li>
-									<PostPreview post={p} />
+									<PostPreview post={p} previousDate={posts[index - 1]?.data.publishDate} />
 								</li>
 							))}
 						</ul>
@@ -90,9 +90,9 @@ const descYearKeys = Object.keys(groupedByYear).sort((a, b) => +b - +a);
 							{yearKey}
 						</h2>
 						<ul class="mt-6 space-y-8 text-start">
-							{groupedByYear[yearKey]?.map((p) => (
+							{groupedByYear[yearKey]?.map((p, index, posts) => (
 								<li>
-									<PostPreview post={p} />
+									<PostPreview post={p} previousDate={posts[index - 1]?.data.publishDate} />
 								</li>
 							))}
 						</ul>
