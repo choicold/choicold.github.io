@@ -5,6 +5,7 @@ interface Props {
 	inlineSubtitle?: string;
 	period?: string;
 	repoUrl?: string;
+	role?: string;
 	storeUrl?: string;
 	subtitle?: string;
 	tags?: string[];
@@ -12,7 +13,8 @@ interface Props {
 	titleUrl?: string;
 }
 
-const { inlineSubtitle, period, repoUrl, storeUrl, subtitle, tags, title, titleUrl } = Astro.props;
+const { inlineSubtitle, period, repoUrl, role, storeUrl, subtitle, tags, title, titleUrl } =
+	Astro.props;
 ---
 
 <article class="mb-8 last:mb-0">
@@ -60,11 +62,12 @@ const { inlineSubtitle, period, repoUrl, storeUrl, subtitle, tags, title, titleU
 		{period && <span class="text-muted text-xs">{period}</span>}
 	</div>
 	{subtitle && <p class="text-muted mt-1 text-sm">{subtitle}</p>}
+	{role && <p class="mt-2 text-sm font-medium">{role}</p>}
 	{
 		tags && tags.length > 0 && (
 			<ul class="mt-2 flex flex-wrap gap-x-2 gap-y-1">
 				{tags.map((tag) => (
-					<li class="text-muted text-xs">#{tag}</li>
+					<li class="text-muted text-xs">{tag}</li>
 				))}
 			</ul>
 		)

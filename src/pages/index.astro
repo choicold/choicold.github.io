@@ -11,12 +11,12 @@ const meta = {
 
 const skillGroups: { items: string[]; label: string }[] = [
 	{
-		label: "Back-End",
-		items: ["Java", "Spring Boot", "Spring Data JPA", "PostgreSQL", "Flyway"],
+		label: "Backend",
+		items: ["Java", "TypeScript", "Spring Boot", "Spring Data JPA", "Node.js", "NestJS"],
 	},
 	{
-		label: "DevOps",
-		items: ["AWS (EC2, RDS)", "Docker", "Docker Compose", "GitHub Actions"],
+		label: "Infrastructure",
+		items: ["PostgreSQL", "MySQL", "Redis", "AWS EC2", "AWS RDS", "AWS S3", "Docker", "MinIO"],
 	},
 ];
 
@@ -73,7 +73,7 @@ const awards: {
 					<h1 class="title">최한기</h1>
 					<SocialList showLabel={false} />
 				</div>
-				<p class="text-muted">Software Engineer · Backend Developer</p>
+				<p class="text-muted">Backend Developer</p>
 			</div>
 			<img
 				src="/face.jpg"
@@ -85,34 +85,9 @@ const awards: {
 		<CVSection title="Introduce">
 			<div class="prose prose-sm prose-cactus max-w-none">
 				<p>
-					안녕하세요, 추측보다는 데이터를 기반으로 한 판단을 중시하는 개발자
-					<strong>최한기</strong>입니다.
+					서비스의 핵심 요구를 기준으로 데이터를 검증하고, 구현 비용과 운영 부담을 고려해 해결
+					범위를 정하는 백엔드 개발자 <strong>최한기</strong>입니다.
 				</p>
-				<p>
-					백엔드 엔지니어링과 데이터베이스 설계에 관심이 많으며, 문제를 해결할 때 지표를 먼저
-					측정하고 그 결과를 근거로 의사결정을 내리는 방식을 지향합니다. 뉴스 검색 쿼리의 병목을
-					측정해 인덱스 전환으로 실행 속도를 약 37배 단축하거나, 마스터 데이터 커버리지를 수치로
-					검증해 불필요한 LLM 파이프라인 도입을 기각하는 등 측정 기반의 선택을 쌓아가고 있습니다.
-				</p>
-			</div>
-		</CVSection>
-
-		<CVSection title="Skills">
-			<div class="space-y-4">
-				{
-					skillGroups.map((group) => (
-						<div>
-							<h3 class="text-accent-2 mb-2 text-base font-semibold">{group.label}</h3>
-							<ul class="flex flex-wrap gap-2">
-								{group.items.map((item) => (
-									<li class="border-accent-2/15 text-muted rounded-md border px-2.5 py-1 text-xs">
-										{item}
-									</li>
-								))}
-							</ul>
-						</div>
-					))
-				}
 			</div>
 		</CVSection>
 
@@ -121,24 +96,16 @@ const awards: {
 				title="Brief"
 				storeUrl="https://play.google.com/store/apps/details?id=com.swyp.brife&hl="
 				repoUrl="https://github.com/swyp-app-4/Brief"
-				subtitle="네이버 뉴스 스크래핑 및 LLM 프롬프팅을 활용한 관심사 기반 카테고리별 통합 요약 앱"
+				subtitle="네이버에 게재된 여러 언론사의 기사를 관심사와 카테고리별로 통합 요약하는 앱"
 				period="2026.02 ~ 2026.04"
-				tags={["spring-boot", "postgresql", "jpa", "llm", "openapi"]}
 			>
-				<p class="text-muted mt-3 text-sm">
-					[역할 / 팀 규모]: 검색, DB 담당 / 9인 팀(PM 1명, DE 3명, FE 1명, BE 4명)
-				</p>
 				<ul>
 					<li>
-						<strong>[성능 개선]</strong> 뉴스 약 1.6만 건 기준 pg_trgm GIN 전환, 93ms→2.5ms (EXPLAIN ANALYZE,
-						약 37배)
+						뉴스 약 1.6만 건에서 pg_trgm GIN 인덱스를 적용해 검색 실행 시간을
+						<strong>93ms에서 2.5ms로 단축</strong>
 					</li>
 					<li>
-						<strong>[쿼리·DB 최적화]</strong> 검색 Slice 적용과 홈피드 Window Function 단일 쿼리화, Category
-						테이블 분리로 FK 정합성 확보
-					</li>
-					<li>
-						<strong>[백엔드 기반 설계]</strong> ERD 초안·API 초안·개발환경 세팅을 담당하고 검색 기능 구현
+						Window Function을 적용해 <strong>홈피드 조회를 단일 쿼리로 통합</strong>
 					</li>
 				</ul>
 			</CVEntry>
@@ -146,25 +113,23 @@ const awards: {
 			<CVEntry
 				title="KeepEat"
 				repoUrl="https://github.com/KeepEatSSU/KeepEat/tree/BE"
-				subtitle="1인 가구를 위한 식재료 소비기한·재고 관리 및 보유 식재료 기반 AI 맞춤 레시피 추천 앱"
-				period="2026.03 ~ 진행 중"
-				tags={["spring-boot", "postgresql", "aws", "docker", "github-actions", "llm"]}
+				subtitle="냉장고 속 식재료를 관리하고 보유 식재료로 요리할 레시피를 추천하는 앱"
+				period="2026.03 ~ 2026.06"
 			>
-				<p class="text-muted mt-3 text-sm">
-					[역할 / 팀 규모]: 식재료 CRUD, 인프라 담당 / FE 1명, BE 3명
-				</p>
 				<ul>
 					<li>
-						<strong>[도메인 모델링]</strong> 약 36만 개 레시피 식재료명 기반 10대분류·49중분류·611품목
-						마스터 DB 설계
+						약 36만 개 레시피의 식재료명을 바탕으로 <strong
+							>611개 품목의 식재료 마스터 DB 설계</strong
+						>
 					</li>
 					<li>
-						<strong>[데이터 기반 의사결정]</strong> 컬리·SSG 450개 SKU 기준 82.0% 커버리지 측정, LLM 자동분류
-						대신 사용자 커스텀 등록으로 결정
+						컬리와 SSG 상품 450개에서 마스터 DB 커버리지 82%를 확인하고, 미포함 약 18%가 밀키트와
+						완제품 등 서비스 대상 밖의 식료품임을 분석해
+						<strong>미등록 식재료의 소비기한 제공을 위한 LLM 자동화 도입 보류</strong>. 예외는
+						사용자 커스텀 등록으로 수용하고 마스터 DB 반영은 관리자 검토로 처리하는 방안 선택
 					</li>
 					<li>
-						<strong>[인프라 구축]</strong> AWS EC2·RDS 기반 서버 아키텍처 설계·배포 및 GitHub Actions
-						CI/CD 파이프라인 구축
+						AWS EC2와 RDS로 서버를 배포하고 GitHub Actions로 <strong>배포 자동화 구축</strong>
 					</li>
 				</ul>
 			</CVEntry>
@@ -181,6 +146,25 @@ const awards: {
 					<li>웹 백엔드 과정</li>
 				</ul>
 			</CVEntry>
+		</CVSection>
+
+		<CVSection title="Skills">
+			<div class="space-y-8">
+				{
+					skillGroups.map((group) => (
+						<div>
+							<h3 class="text-accent-2 mb-1.5 text-base font-semibold">{group.label}</h3>
+							<ul class="flex flex-wrap gap-1.5">
+								{group.items.map((item) => (
+									<li class="border-accent-2/15 text-muted rounded-md border px-2 py-0.5 text-xs">
+										{item}
+									</li>
+								))}
+							</ul>
+						</div>
+					))
+				}
+			</div>
 		</CVSection>
 
 		<CVSection title="Education">
@@ -268,6 +252,11 @@ const awards: {
 </PageLayout>
 
 <style>
+	#cv-document {
+		word-break: keep-all;
+		overflow-wrap: anywhere;
+	}
+
 	@media print {
 		/* 네비게이션 헤더, 푸터 등 CV 외 요소 숨김 */
 		:global(#main-header),
