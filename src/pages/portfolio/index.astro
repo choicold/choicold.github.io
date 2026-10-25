@@ -1,6 +1,7 @@
 ---
 import { getCollection } from "astro:content";
 import { Icon } from "astro-icon/components";
+import ProjectSummary from "@/components/portfolio/ProjectSummary.astro";
 import PageLayout from "@/layouts/Base.astro";
 
 const projects = await getCollection("portfolio");
@@ -61,10 +62,7 @@ const meta = {
 							</div>
 							<span class="text-muted text-xs">{project.data.period}</span>
 						</div>
-						<p class="text-muted mt-2">{project.data.description}</p>
-						<p class="mt-3 text-sm">
-							{project.data.stack.join(" · ")} / {project.data.team}, {project.data.role}
-						</p>
+						<ProjectSummary project={project.data} />
 					</article>
 				</li>
 			))
