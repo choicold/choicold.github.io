@@ -1,8 +1,8 @@
 ---
-title: "Brief - 관심사 기반 뉴스 큐레이션 앱 서비스"
-description: "외부 검색엔진 없이 PostgreSQL 내부 인덱싱으로 뉴스 검색 병목을 해결한 백엔드 프로젝트"
+title: "Brief"
+description: "관심사 기반 뉴스 요약 앱의 검색 성능 개선"
 period: "2026.02 ~ 2026.04"
-stack: ["Spring Boot", "PostgreSQL", "JPA", "LLM"]
+stack: ["Spring Boot", "PostgreSQL", "JPA"]
 team: "9인 팀"
 role: "검색과 DB 담당"
 repoUrl: "https://github.com/swyp-app-4/Brief"
@@ -25,18 +25,13 @@ order: 1
 
 ## Technical Highlights
 
-- **검색 방식 의사결정**
-  - 선택지
-    - `ILIKE`: 구현은 단순하지만 부분일치 검색에서 풀스캔 발생
-    - PGroonga: PostgreSQL 내 FTS 확장으로 형태소 기반 검색 가능
-    - Elasticsearch+nori: 형태소 분석과 랭킹에 강하지만 별도 클러스터와 동기화 파이프라인 필요
-    - `pg_trgm` GIN: PostgreSQL 내부 인덱스로 기존 `ILIKE` 검색 병목 완화
-  - 판단: 형태소 분석·랭킹 본격화 시 PGroonga 또는 ES가 후보이나 현재 규모엔 과한 복잡도, MVP기준 인프라 추가 비용이 없는 `pg_trgm` GIN 선택
-  - 결과: 1.6만 건 기준 Seq Scan 93ms → Bitmap Index Scan 2.5ms
-- **`pg_trgm` 내부 동작**: 문자열을 3글자 조각 집합으로 보고 GIN 후보 추출 후 힙에서 recheck하는 구조. `gin_trgm_ops`가 extract로 trigram 키를 추출하고 consistent로 후보를 판정, recheck로 위양성 제거. 실행계획을 Seq Scan에서 Bitmap Index Scan → Recheck로 전환
-- **동작 범위와 한계 파악**: 2글자 검색어는 trigram 생성 한계로 풀스캔 폴백 가능, 코로나 ↔ COVID 같은 의미 매칭은 불가
-- **테이블 분리 설계**: 온보딩 선택, 뉴스 수집, Topic 부모 책임이 혼재된 단일 Category를 `category_group`와 `category`로 분리 → 갱신 이상 해결
+- **문제 확인**: `ILIKE '%키워드%'` 검색의 Seq Scan 병목을 확인. 현재 부분일치 검색을 유지하면서 실행 시간을 줄이는 데 집중
+- **대안 검토**: PGroonga와 Elasticsearch도 검토했으나 형태소 분석과 랭킹은 MVP 우선순위가 낮았고, Elasticsearch는 별도 클러스터와 동기화가 필요
+- **인덱스 선택**: **추가 인프라가 필요 없는 `pg_trgm` GIN 적용**. 인덱스로 후보를 찾고 힙에서 recheck해 위양성 제거
+- **결과 검증**: 뉴스 약 1.6만 건에서 **93ms → 2.5ms**. EXPLAIN ANALYZE로 Seq Scan에서 Bitmap Index Scan을 활용하는 실행계획으로 전환 확인
+- **검색 한계**: 2글자 검색어는 풀스캔 폴백 가능. 코로나와 COVID처럼 표현이 다른 단어의 의미 매칭은 불가
+- **스키마 설계**: 온보딩과 뉴스 수집 등의 책임이 혼재된 Category를 `category_group`과 `category`로 분리해 **갱신 이상 해결**
 
 ## Impact
 
-- 검색 쿼리 뉴스 약 1.6만 건 기준 **93ms → 2.5ms** (약 37배, EXPLAIN ANALYZE), 외부 검색엔진과 인프라 추가 없이 달성
+- 검색 쿼리 뉴스 약 1.6만 건 기준 **93ms → 2.5ms** (약 37배, EXPLAIN ANALYZE), **외부 검색엔진과 인프라 추가 없이 달성**
