@@ -7,7 +7,7 @@
 // 무엇을: dist의 모든 .html에서 같은 사이트 내부 링크 중 #fragment가 붙은 것을 모아,
 // 대상 페이지 HTML에 그 fragment가 id(또는 name)로 존재하는지 확인한다.
 
-import { readFile, readdir } from "node:fs/promises";
+import { readdir, readFile } from "node:fs/promises";
 import { join, relative } from "node:path";
 
 const DIST = "dist";

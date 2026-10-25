@@ -27,8 +27,7 @@ function insert(roots: WikiTreeNode[], segments: string[], entry: WikiEntry, pre
 	}
 	const path = prefix ? `${prefix}/${head}` : head!;
 	let folder = roots.find(
-		(n): n is Extract<WikiTreeNode, { type: "folder" }> =>
-			n.type === "folder" && n.name === head,
+		(n): n is Extract<WikiTreeNode, { type: "folder" }> => n.type === "folder" && n.name === head,
 	);
 	if (!folder) {
 		folder = { type: "folder", name: head!, path, children: [] };
