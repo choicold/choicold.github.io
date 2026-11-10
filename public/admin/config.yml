@@ -1,0 +1,99 @@
+backend:
+  name: github
+  repo: choicold/choicold.github.io
+  branch: main
+  auth_methods: [token]
+
+app_title: "choicold · 글 관리"
+site_url: https://choicold.github.io
+display_url: https://choicold.github.io/posts/
+logo:
+  src: /icon.svg
+publish_mode: simple
+media_folder: public/uploads
+public_folder: /uploads
+output:
+  omit_empty_optional_fields: true
+
+collections:
+  - name: posts
+    label: 블로그 글
+    label_singular: 글
+    description: "비공개로 저장하며 다듬고, 준비되면 공개로 바꿔 저장하세요. 블로그에는 자동 배포가 끝난 뒤 반영됩니다."
+    folder: src/content/post
+    create: true
+    delete: false
+    extension: md
+    format: yaml-frontmatter
+    path: "{{slug}}/index"
+    slug: "{{slug}}"
+    media_folder: ""
+    public_folder: ""
+    preview_path: "posts/{{slug}}/"
+    summary: "{{title}} · {{draft | ternary('비공개', '공개')}}"
+    sortable_fields: [publishDate, title, updatedDate]
+    view_filters:
+      - { label: 비공개, field: draft, pattern: true }
+      - { label: 공개, field: draft, pattern: false }
+    fields:
+      - name: title
+        label: 제목
+        widget: string
+        pattern: ['^.{1,60}$', '제목은 1~60자로 입력해 주세요.']
+      - name: draft
+        label: 공개 상태
+        widget: select
+        default: true
+        options:
+          - { label: "비공개 — 작성 중", value: true }
+          - { label: "공개 — 블로그에 표시", value: false }
+        hint: "비공개 글도 저장 버튼으로 저장소에 보관됩니다. 공개로 저장하면 배포 후 블로그에 표시됩니다."
+      - name: body
+        label: 본문
+        widget: markdown
+        required: false
+      - name: description
+        label: 글 요약
+        widget: text
+        hint: 글 목록과 검색 결과에 표시할 짧은 소개를 적어 주세요.
+      - name: category
+        label: 분류
+        widget: select
+        options: [회고, 기술]
+        default: 기술
+      - name: tags
+        label: 태그
+        widget: list
+        required: false
+        default: []
+      - name: publishDate
+        label: 발행일
+        widget: datetime
+        default: "{{now}}"
+        format: YYYY-MM-DD
+        time_format: false
+        hint: 미래 날짜를 지정해도 예약 발행되지는 않습니다. 공개 여부는 공개 상태로 결정됩니다.
+      - name: updatedDate
+        label: 수정일
+        widget: datetime
+        required: false
+        format: YYYY-MM-DD
+        time_format: false
+      - name: pinned
+        label: 상단 고정
+        widget: boolean
+        default: false
+        required: false
+      - name: coverImage
+        label: 대표 이미지
+        widget: object
+        required: false
+        collapsed: true
+        fields:
+          - { name: src, label: 이미지, widget: image }
+          - { name: alt, label: 이미지 설명, widget: string }
+      - name: ogImage
+        label: 공유 이미지 주소
+        widget: string
+        required: false
+        hint: 비워 두면 제목으로 공유 이미지를 자동 생성합니다.

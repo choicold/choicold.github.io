@@ -48,6 +48,10 @@ npm run preview  # 빌드 결과 로컬 미리보기
 
 ## 글 작성
 
+브라우저에서 작성하려면 배포된 사이트의 [`/admin/`](https://choicold.github.io/admin/)을 사용합니다.
+새 글은 비공개로 시작하고, 공개 상태를 바꿔 저장하면 GitHub Actions가 블로그에 반영합니다.
+최초 GitHub 토큰 로그인과 이미지 첨부 등은 [에디터 사용법](docs/blog-editor.md)을 참고하세요.
+
 `src/content/post/` 에 `.md` 또는 `.mdx` 파일을 추가하면 파일명이 URL slug가 됩니다.
 글의 프론트매터에 `category: "회고"` 또는 `category: "기술"`을 지정하면 Blog의 해당 폴더에 표시됩니다. 분류를 바꿔도 파일 경로를 유지하면 글 주소는 바뀌지 않습니다. 태그는 분류와 별도로 지정합니다.
 짧은 노트는 `src/content/note/` 에 추가합니다. 프론트매터 스키마는 `src/content.config.ts` 에 정의돼 있습니다.

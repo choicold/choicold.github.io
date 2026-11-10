@@ -31,7 +31,7 @@ export default defineConfig({
 	integrations: [
 		expressiveCode(expressiveCodeOptions),
 		icon(),
-		sitemap(),
+		sitemap({ filter: (page) => !new URL(page).pathname.startsWith("/admin") }),
 		mdx(),
 		robotsTxt(),
 		webmanifest({
