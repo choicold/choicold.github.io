@@ -57,9 +57,6 @@ const awards: {
 ---
 
 <PageLayout meta={meta}>
-	<div class="relative print:hidden">
-		<button type="button" id="cv-print" class="print-action"> PDF로 저장 </button>
-	</div>
 
 	<div class="document-grid cv-grid">
 		<div id="cv-document">
@@ -308,8 +305,6 @@ const awards: {
 </style>
 
 <script>
-	const printBtn = document.getElementById("cv-print");
-	printBtn?.addEventListener("click", () => window.print());
 
 	const dialog = document.getElementById("award-lightbox") as HTMLDialogElement | null;
 	const img = document.getElementById("award-lightbox-img") as HTMLImageElement | null;

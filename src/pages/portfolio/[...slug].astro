@@ -26,9 +26,6 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<div class="relative print:hidden">
-		<button type="button" id="portfolio-print" class="print-action"> PDF로 저장 </button>
-	</div>
 
 	<article id="portfolio-document" class="grow break-words" data-pagefind-body>
 		<header class="mb-10">
@@ -80,7 +77,6 @@ const meta = {
 	@media print {
 		:global(#main-header),
 		:global(footer),
-		#portfolio-print,
 		:global(details) {
 			display: none !important;
 		}
@@ -110,8 +106,3 @@ const meta = {
 		margin: 16mm;
 	}
 </style>
-
-<script>
-	const printBtn = document.getElementById("portfolio-print");
-	printBtn?.addEventListener("click", () => window.print());
-</script>

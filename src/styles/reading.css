@@ -393,16 +393,6 @@ html[data-theme="dark"] {
 	max-width: 960px;
 	margin-bottom: 48px;
 }
-.print-action {
-	display: block;
-	margin: 0 0 24px auto;
-	padding: 6px 12px;
-	border: 1px solid var(--reading-border);
-	border-radius: 4px;
-	color: var(--color-muted);
-	font-size: 13px;
-	cursor: pointer;
-}
 #cv-document > header {
 	min-height: 132px;
 }
@@ -585,7 +575,6 @@ html[data-theme="dark"] {
 	.site-header,
 	.site-footer,
 	.document-toc,
-	.print-action,
 	.article-back {
 		display: none;
 	}
