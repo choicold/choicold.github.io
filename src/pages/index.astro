@@ -1,5 +1,4 @@
 ---
-import TOC from "@/components/blog/TOC.astro";
 import CVEntry from "@/components/cv/CVEntry.astro";
 import CVSection from "@/components/cv/CVSection.astro";
 import SocialList from "@/components/SocialList.astro";
@@ -58,7 +57,7 @@ const awards: {
 
 <PageLayout meta={meta}>
 
-	<div class="document-grid cv-grid">
+	<div class="about-content">
 		<div id="cv-document">
 
 			<div class="about-intro">
@@ -207,11 +206,6 @@ const awards: {
 			</CVSection>
 		</div>
 
-		<TOC
-			headings={["Projects", "Experience", "Skills", "Education", "Awards"].map(
-				(text) => ({ text, depth: 2, slug: text.toLowerCase() }),
-			)}
-		/>
 	</div>
 	{/* Lightbox for award photos */}
 	<dialog
