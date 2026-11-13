@@ -1,6 +1,7 @@
 ---
 import { getCollection, render } from "astro:content";
 import type { GetStaticPaths, InferGetStaticPropsType } from "astro";
+import TOC from "@/components/blog/TOC.astro";
 import FormattedDate from "@/components/FormattedDate.astro";
 import { getCategory } from "@/data/wiki";
 import WikiLayout from "@/layouts/Wiki.astro";
@@ -16,7 +17,7 @@ export const getStaticPaths = (async () => {
 export type Props = InferGetStaticPropsType<typeof getStaticPaths>;
 
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const category = getCategory(entry);
 const displayDate = entry.data.updatedDate ?? entry.data.publishDate;
 
@@ -48,8 +49,11 @@ const meta = {
 			)
 		}
 
-		<div class="prose prose-sm prose-cactus mt-4 max-w-none [&_table]:block [&_table]:overflow-x-auto [&_th]:min-w-20 [&_th]:whitespace-nowrap">
-			<Content />
+		<div class="document-grid wiki-body">
+			{headings.length > 0 && <TOC headings={headings} />}
+			<div class="prose reading-content">
+				<Content />
+			</div>
 		</div>
 	</article>
 </WikiLayout>

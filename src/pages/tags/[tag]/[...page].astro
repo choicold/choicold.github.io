@@ -70,7 +70,12 @@ const paginationProps = {
 		{
 			page.data.map((p, index, posts) => (
 				<li>
-					<PostPreview as="h2" post={p} previousDate={posts[index - 1]?.data.publishDate} />
+					<PostPreview
+						as="h2"
+						withDesc
+						post={p}
+						previousDate={posts[index - 1]?.data.publishDate}
+					/>
 				</li>
 			))
 		}

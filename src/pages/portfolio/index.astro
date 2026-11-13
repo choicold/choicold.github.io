@@ -16,18 +16,19 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<div class="mb-12">
+	<div class="page-heading">
 		<h1 class="title">Portfolio</h1>
+
 	</div>
 
-	<ul class="space-y-8" role="list">
+	<ul class="project-list" role="list">
 		{
 			sortedProjects.map((project) => (
 				<li>
-					<article class="border-accent-2/15 rounded-md border p-4">
+					<article class="project-row">
 						<div class="flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
 							<div class="flex items-center gap-x-2">
-								<h2 class="title text-accent-2 text-lg">
+								<h2 class="project-title">
 									<a class="cactus-link" href={`/portfolio/${project.id}/`}>
 										{project.data.title}
 									</a>

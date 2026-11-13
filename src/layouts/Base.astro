@@ -6,16 +6,17 @@ import SkipLink from "@/components/SkipLink.astro";
 import ThemeProvider from "@/components/ThemeProvider.astro";
 import { siteConfig } from "@/site.config";
 import type { SiteMeta } from "@/types";
+import "@/styles/reading.css";
 
 interface Props {
 	meta: SiteMeta;
-	/** 본문 최대 폭 Tailwind 클래스. 기본은 max-w-3xl. */
+	/** 본문 최대 폭 Tailwind 클래스. 지정하지 않으면 공통 레이아웃. */
 	widthClass?: string;
 }
 
 const {
 	meta: { articleDate, description = siteConfig.description, ogImage, title },
-	widthClass = "max-w-3xl",
+	widthClass = "",
 } = Astro.props;
 ---
 
@@ -23,16 +24,15 @@ const {
 	<head>
 		<BaseHead articleDate={articleDate} description={description} ogImage={ogImage} title={title} />
 		<ThemeProvider />
+		<link
+			rel="stylesheet"
+			href="https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap"
+		/>
 	</head>
-	<body
-		class:list={[
-			"bg-global-bg text-global-text mx-auto flex min-h-screen flex-col px-4 pt-16 font-mono text-sm font-normal antialiased sm:px-8",
-			widthClass,
-		]}
-	>
+	<body class="reading-site">
 		<SkipLink />
 		<Header />
-		<main id="main">
+		<main id="main" class:list={["site-main", widthClass]}>
 			<slot />
 		</main>
 		<Footer />

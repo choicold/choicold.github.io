@@ -19,11 +19,12 @@ const meta = {
 				<Icon aria-hidden="true" class="h-6 w-6" focusable="false" name="mdi:rss" />
 			</a>
 		</h1>
+
 		{
 			tree.length === 0 ? (
 				<p class="text-muted">아직 작성된 위키 글이 없습니다.</p>
 			) : (
-				<div class="space-y-8">
+				<div class="wiki-index">
 					{tree.map(([category, entries]) => (
 						<div>
 							<h2 class="text-accent-2 mb-3 text-lg font-semibold">{category}</h2>

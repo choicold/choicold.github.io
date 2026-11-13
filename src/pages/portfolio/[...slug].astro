@@ -27,13 +27,7 @@ const meta = {
 
 <PageLayout meta={meta}>
 	<div class="relative print:hidden">
-		<button
-			type="button"
-			id="portfolio-print"
-			class="absolute right-0 bottom-2 z-10 rounded-md px-3 py-1.5 text-xs opacity-0"
-		>
-			PDF로 저장
-		</button>
+		<button type="button" id="portfolio-print" class="print-action"> PDF로 저장 </button>
 	</div>
 
 	<article id="portfolio-document" class="grow break-words" data-pagefind-body>
@@ -73,11 +67,9 @@ const meta = {
 			<ProjectSummary project={entry.data} />
 		</header>
 
-		<div class="flex flex-col gap-10 lg:flex-row lg:items-start lg:justify-between">
+		<div class="document-grid">
 			{!!headings.length && <TOC headings={headings} />}
-			<div
-				class="prose prose-sm prose-headings:font-semibold prose-headings:text-accent-2 prose-headings:before:absolute prose-headings:before:-ms-4 prose-headings:before:text-muted prose-headings:hover:before:text-accent sm:prose-headings:before:content-['#'] sm:prose-th:before:content-none"
-			>
+			<div class="prose reading-content">
 				<Content />
 			</div>
 		</div>

@@ -12,8 +12,10 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-6">Tags</h1>
-	<ul class="space-y-4">
+	<header class="page-heading">
+		<h1 class="title">Tags</h1>
+	</header>
+	<ul class="tag-index">
 		{
 			allTags.map(([tag, val]) => (
 				<li class="flex items-center gap-x-2">

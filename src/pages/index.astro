@@ -1,4 +1,5 @@
 ---
+import TOC from "@/components/blog/TOC.astro";
 import CVEntry from "@/components/cv/CVEntry.astro";
 import CVSection from "@/components/cv/CVSection.astro";
 import SocialList from "@/components/SocialList.astro";
@@ -57,163 +58,164 @@ const awards: {
 
 <PageLayout meta={meta}>
 	<div class="relative print:hidden">
-		<button
-			type="button"
-			id="cv-print"
-			class="absolute right-0 bottom-2 z-10 rounded-md px-3 py-1.5 text-xs opacity-0"
-		>
-			PDF로 저장
-		</button>
+		<button type="button" id="cv-print" class="print-action"> PDF로 저장 </button>
 	</div>
 
-	<div id="cv-document">
-		<header class="relative mb-4 pr-28">
-			<div>
-				<div class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-					<h1 class="title">최한기</h1>
-					<SocialList showLabel={false} />
+	<div class="document-grid cv-grid">
+		<div id="cv-document">
+			<header class="relative mb-4 pr-28">
+				<div>
+					<div class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+						<h1 class="title">최한기</h1>
+						<SocialList showLabel={false} />
+					</div>
+					<p class="text-muted">Backend Developer</p>
 				</div>
-				<p class="text-muted">Backend Developer</p>
-			</div>
-			<img
-				src="/face.jpg"
-				alt="최한기 프로필 사진"
-				class="absolute top-0 right-0 h-28 w-24 rounded-md object-cover"
-			/>
-		</header>
+				<img
+					src="/face.jpg"
+					alt="최한기 프로필 사진"
+					class="absolute top-0 right-0 h-28 w-24 rounded-md object-cover"
+				/>
+			</header>
 
-		<CVSection title="Introduce">
-			<div class="prose prose-sm prose-cactus max-w-none">
-				<p>
-					서비스의 핵심 요구를 기준으로 데이터를 검증하고, 구현 비용과 운영 부담을 고려해 해결
-					범위를 정하는 백엔드 개발자 <strong>최한기</strong>입니다.
-				</p>
-			</div>
-		</CVSection>
+			<CVSection title="Introduce">
+				<div class="prose prose-sm prose-cactus max-w-none">
+					<p>
+						서비스의 핵심 요구를 기준으로 데이터를 검증하고, 구현 비용과 운영 부담을 고려해 해결
+						범위를 정하는 백엔드 개발자 <strong>최한기</strong>입니다.
+					</p>
+				</div>
+			</CVSection>
 
-		<CVSection title="Projects">
-			<CVEntry
-				title="Brief"
-				storeUrl="https://play.google.com/store/apps/details?id=com.swyp.brife&hl="
-				repoUrl="https://github.com/swyp-app-4/Brief"
-				subtitle="네이버에 게재된 여러 언론사의 기사를 관심사와 카테고리별로 통합 요약하는 앱"
-				period="2026.02 ~ 2026.04"
-			>
-				<ul>
-					<li>
-						뉴스 약 1.6만 건에서 pg_trgm GIN 인덱스를 적용해 검색 실행 시간을
-						<strong>93ms에서 2.5ms로 단축</strong>
-					</li>
-					<li>
-						Window Function을 적용해 <strong>홈피드 조회를 단일 쿼리로 통합</strong>
-					</li>
-				</ul>
-			</CVEntry>
+			<CVSection title="Projects">
+				<CVEntry
+					title="Brief"
+					storeUrl="https://play.google.com/store/apps/details?id=com.swyp.brife&hl="
+					repoUrl="https://github.com/swyp-app-4/Brief"
+					subtitle="네이버에 게재된 여러 언론사의 기사를 관심사와 카테고리별로 통합 요약하는 앱"
+					period="2026.02 ~ 2026.04"
+				>
+					<ul>
+						<li>
+							뉴스 약 1.6만 건에서 pg_trgm GIN 인덱스를 적용해 검색 실행 시간을
+							<strong>93ms에서 2.5ms로 단축</strong>
+						</li>
+						<li>
+							Window Function을 적용해 <strong>홈피드 조회를 단일 쿼리로 통합</strong>
+						</li>
+					</ul>
+				</CVEntry>
 
-			<CVEntry
-				title="KeepEat"
-				repoUrl="https://github.com/KeepEatSSU/KeepEat/tree/BE"
-				subtitle="냉장고 속 식재료를 관리하고 보유 식재료로 요리할 레시피를 추천하는 앱"
-				period="2026.03 ~ 2026.06"
-			>
-				<ul>
-					<li>
-						약 36만 개 레시피의 식재료명을 바탕으로 <strong
-							>611개 품목의 식재료 마스터 DB 설계</strong
-						>
-					</li>
-					<li>
-						컬리와 SSG 상품 450개에서 마스터 DB 커버리지 82%를 확인하고, 미포함 약 18%가 밀키트와
-						완제품 등 서비스 대상 밖의 식료품임을 분석해
-						<strong>미등록 식재료의 소비기한 제공을 위한 LLM 자동화 도입 보류</strong>. 예외는
-						사용자 커스텀 등록으로 수용하고 마스터 DB 반영은 관리자 검토로 처리하는 방안 선택
-					</li>
-					<li>
-						AWS EC2와 RDS로 서버를 배포하고 GitHub Actions로 <strong>배포 자동화 구축</strong>
-					</li>
-				</ul>
-			</CVEntry>
-		</CVSection>
+				<CVEntry
+					title="KeepEat"
+					repoUrl="https://github.com/KeepEatSSU/KeepEat/tree/BE"
+					subtitle="냉장고 속 식재료를 관리하고 보유 식재료로 요리할 레시피를 추천하는 앱"
+					period="2026.03 ~ 2026.06"
+				>
+					<ul>
+						<li>
+							약 36만 개 레시피의 식재료명을 바탕으로 <strong
+								>611개 품목의 식재료 마스터 DB 설계</strong
+							>
+						</li>
+						<li>
+							컬리와 SSG 상품 450개에서 마스터 DB 커버리지 82%를 확인하고, 미포함 약 18%가 밀키트와
+							완제품 등 서비스 대상 밖의 식료품임을 분석해
+							<strong>미등록 식재료의 소비기한 제공을 위한 LLM 자동화 도입 보류</strong>. 예외는
+							사용자 커스텀 등록으로 수용하고 마스터 DB 반영은 관리자 검토로 처리하는 방안 선택
+						</li>
+						<li>
+							AWS EC2와 RDS로 서버를 배포하고 GitHub Actions로 <strong>배포 자동화 구축</strong>
+						</li>
+					</ul>
+				</CVEntry>
+			</CVSection>
 
-		<CVSection title="Experience">
-			<CVEntry title="이모션웨이브" inlineSubtitle="인턴" period="2026.09 ~ 현재">
-				<ul>
-					<li>AI Agent 개발</li>
-				</ul>
-			</CVEntry>
-			<CVEntry title="HMG SOFTEER BOOTCAMP 8기" period="2026.07 ~ 2026.08">
-				<ul>
-					<li>웹 백엔드 과정</li>
-				</ul>
-			</CVEntry>
-		</CVSection>
+			<CVSection title="Experience">
+				<CVEntry title="이모션웨이브" inlineSubtitle="인턴" period="2026.09 ~ 현재">
+					<ul>
+						<li>AI Agent 개발</li>
+					</ul>
+				</CVEntry>
+				<CVEntry title="HMG SOFTEER BOOTCAMP 8기" period="2026.07 ~ 2026.08">
+					<ul>
+						<li>웹 백엔드 과정</li>
+					</ul>
+				</CVEntry>
+			</CVSection>
 
-		<CVSection title="Skills">
-			<div class="space-y-8">
-				{
-					skillGroups.map((group) => (
-						<div>
-							<h3 class="text-accent-2 mb-1.5 text-base font-semibold">{group.label}</h3>
-							<ul class="flex flex-wrap gap-1.5">
-								{group.items.map((item) => (
-									<li class="border-accent-2/15 text-muted rounded-md border px-2 py-0.5 text-xs">
-										{item}
-									</li>
-								))}
-							</ul>
-						</div>
-					))
-				}
-			</div>
-		</CVSection>
+			<CVSection title="Skills">
+				<div class="space-y-8">
+					{
+						skillGroups.map((group) => (
+							<div>
+								<h3 class="text-accent-2 mb-1.5 text-base font-semibold">{group.label}</h3>
+								<ul class="flex flex-wrap gap-1.5">
+									{group.items.map((item) => (
+										<li class="border-accent-2/15 text-muted rounded-md border px-2 py-0.5 text-xs">
+											{item}
+										</li>
+									))}
+								</ul>
+							</div>
+						))
+					}
+				</div>
+			</CVSection>
 
-		<CVSection title="Education">
-			<CVEntry title="숭실대학교 소프트웨어학부 학사 (졸업예정)" period="2021.03 ~ 2027.02">
-				<ul>
-					<li>GPA 3.73 / 4.5</li>
-				</ul>
-			</CVEntry>
-		</CVSection>
+			<CVSection title="Education">
+				<CVEntry title="숭실대학교 소프트웨어학부 학사 (졸업예정)" period="2021.03 ~ 2027.02">
+					<ul>
+						<li>GPA 3.73 / 4.5</li>
+					</ul>
+				</CVEntry>
+			</CVSection>
 
-		<CVSection title="Awards">
-			<div class="space-y-4">
-				{
-					awards.map((award) => (
-						<div>
-							<p class="text-accent-2 text-sm font-semibold">
-								{award.photo ? (
-									<a
-										class="cactus-link cursor-pointer text-left"
-										href={award.photo.src}
-										data-award-photo={award.photo.src}
-										data-award-alt={award.photo.alt}
-										rel="noreferrer"
-										target="_blank"
-									>
-										{award.title}
-									</a>
-								) : (
-									award.title
-								)}
-							</p>
-							<p class="text-muted mt-1 text-sm">
-								{award.org}
-								{(award.paper || award.suffix) && " — "}
-								{award.paper ? (
-									<a class="cactus-link" href={award.paper.url} rel="noreferrer" target="_blank">
-										"{award.paper.title}"
-									</a>
-								) : (
-									award.suffix
-								)}
-							</p>
-						</div>
-					))
-				}
-			</div>
-		</CVSection>
+			<CVSection title="Awards">
+				<div class="space-y-4">
+					{
+						awards.map((award) => (
+							<div>
+								<p class="text-accent-2 text-sm font-semibold">
+									{award.photo ? (
+										<a
+											class="cactus-link cursor-pointer text-left"
+											href={award.photo.src}
+											data-award-photo={award.photo.src}
+											data-award-alt={award.photo.alt}
+											rel="noreferrer"
+											target="_blank"
+										>
+											{award.title}
+										</a>
+									) : (
+										award.title
+									)}
+								</p>
+								<p class="text-muted mt-1 text-sm">
+									{award.org}
+									{(award.paper || award.suffix) && " — "}
+									{award.paper ? (
+										<a class="cactus-link" href={award.paper.url} rel="noreferrer" target="_blank">
+											"{award.paper.title}"
+										</a>
+									) : (
+										award.suffix
+									)}
+								</p>
+							</div>
+						))
+					}
+				</div>
+			</CVSection>
+		</div>
+
+		<TOC
+			headings={["Introduce", "Projects", "Experience", "Skills", "Education", "Awards"].map(
+				(text) => ({ text, depth: 2, slug: text.toLowerCase() }),
+			)}
+		/>
 	</div>
-
 	{/* Lightbox for award photos */}
 	<dialog
 		id="award-lightbox"

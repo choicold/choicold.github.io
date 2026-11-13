@@ -1,22 +1,52 @@
 ---
 import type { MarkdownHeading } from "astro";
-import { generateToc } from "@/utils/generateToc";
-import TOCHeading from "./TOCHeading.astro";
 
 interface Props {
 	headings: MarkdownHeading[];
 }
-
 const { headings } = Astro.props;
-
-const toc = generateToc(headings);
+const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
 ---
 
-<details open class="lg:sticky lg:top-12 lg:order-2 lg:-me-32 lg:basis-64">
-	<summary class="title hover:marker:text-accent cursor-pointer text-lg">Table of Contents</summary>
-	<nav class="ms-4 lg:w-full">
-		<ol class="mt-4">
-			{toc.map((heading) => <TOCHeading heading={heading} />)}
-		</ol>
+<details open class="document-toc">
+	<summary>Table of Contents</summary>
+	<nav aria-label="Table of Contents">
+		{
+			toc.map((h) => (
+				<a href={`#${h.slug}`} class:list={{ nested: h.depth === 3 }}>
+					{h.text}
+				</a>
+			))
+		}
 	</nav>
 </details>
+<script>
+	for (const toc of document.querySelectorAll<HTMLDetailsElement>(".document-toc")) {
+		const media = window.matchMedia("(min-width: 1024px)");
+		const sync = () => {
+			toc.open = media.matches;
+		};
+		sync();
+		media.addEventListener("change", sync);
+		const links = [...toc.querySelectorAll<HTMLAnchorElement>("a")];
+		const observer = new IntersectionObserver(
+			(entries) => {
+				for (const entry of entries) {
+					if (entry.isIntersecting) {
+						for (const link of links) {
+							const active = decodeURIComponent(link.hash.slice(1)) === entry.target.id;
+							link.classList.toggle("active", active);
+							if (active) link.setAttribute("aria-current", "location");
+							else link.removeAttribute("aria-current");
+						}
+					}
+				}
+			},
+			{ rootMargin: "-15% 0px -65% 0px" },
+		);
+		for (const link of links) {
+			const target = document.getElementById(decodeURIComponent(link.hash.slice(1)));
+			if (target) observer.observe(target);
+		}
+	}
+</script>
