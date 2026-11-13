@@ -60,29 +60,29 @@ const awards: {
 
 	<div class="document-grid cv-grid">
 		<div id="cv-document">
-			<header class="relative mb-4 pr-28">
-				<div>
-					<div class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
-						<h1 class="title">최한기</h1>
-						<SocialList showLabel={false} />
-					</div>
-					<p class="text-muted">Backend Developer</p>
-				</div>
-				<img
-					src="/face.jpg"
-					alt="최한기 프로필 사진"
-					class="absolute top-0 right-0 h-28 w-24 rounded-md object-cover"
-				/>
-			</header>
 
-			<CVSection title="Introduce">
+			<div class="about-intro">
+				<div class="about-profile">
+					<img src="/face.jpg" alt="최한기 프로필 사진" class="about-portrait" />
+					<div class="about-socials"><SocialList showLabel={false} /></div>
+				</div>
+				<div class="about-intro-copy">
+					<header class="about-heading">
+						<div class="mb-1 flex flex-wrap items-center gap-x-3 gap-y-1">
+							<h1 class="title">최한기</h1>
+						</div>
+						<p class="text-muted">Software Engineer</p>
+					</header>
+
 				<div class="prose prose-sm prose-cactus max-w-none">
 					<p>
 						서비스의 핵심 요구를 기준으로 데이터를 검증하고, 구현 비용과 운영 부담을 고려해 해결
 						범위를 정하는 백엔드 개발자 <strong>최한기</strong>입니다.
 					</p>
 				</div>
-			</CVSection>
+
+				</div>
+			</div>
 
 			<CVSection title="Projects">
 				<CVEntry
@@ -208,7 +208,7 @@ const awards: {
 		</div>
 
 		<TOC
-			headings={["Introduce", "Projects", "Experience", "Skills", "Education", "Awards"].map(
+			headings={["Projects", "Experience", "Skills", "Education", "Awards"].map(
 				(text) => ({ text, depth: 2, slug: text.toLowerCase() }),
 			)}
 		/>
