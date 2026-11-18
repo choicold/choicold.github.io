@@ -1,18 +1,41 @@
 ---
+import { Image } from "astro:assets";
+import { createHash } from "node:crypto";
+import olmecThumbnails from "@/data/olmec-thumbnails.json";
 import { getAllPosts, getUniqueTagsWithCount } from "@/data/post";
 import Base from "@/layouts/Base.astro";
 import { collectionDateSort } from "@/utils/date";
+import { postThumbnail } from "@/utils/postThumbnail";
 
 const posts = (await getAllPosts()).sort(collectionDateSort);
 const tags = getUniqueTagsWithCount(posts);
+// Seeded ordering keeps choices stable across reloads and avoids repeats until the pool cycles.
+const shuffledIds = posts
+	.map((post) => post.id)
+	.sort((a, b) =>
+		createHash("sha256")
+			.update(a)
+			.digest("hex")
+			.localeCompare(createHash("sha256").update(b).digest("hex")),
+	);
+const cards = await Promise.all(
+	posts.map(async (post) => {
+		const fallback = olmecThumbnails[shuffledIds.indexOf(post.id) % olmecThumbnails.length];
+		const thumbnail = await postThumbnail(post, fallback?.src);
+		const credit = olmecThumbnails.find((item) => item.src === thumbnail && item.license);
+		return { post, thumbnail, credit };
+	}),
+);
 ---
 
-<Base meta={{ title: "Posts", description: "경험을 돌아보는 회고와 공부한 기술을 정리하는 글" }}>
-	<div class="document-grid">
-		<section>
-			<header class="page-heading">
-				<h1 class="title">Posts</h1>
-			</header>
+<Base widthClass="blog-index" meta={{ title: "Posts", description: "경험을 돌아보는 회고와 공부한 기술을 정리하는 글" }}>
+	<section>
+		<header class="page-heading"><h1 class="title">Posts</h1></header>
+		<nav class="post-tags" aria-label="Tags">
+			<ul>{tags.map(([tag, count]) => (
+				<li><a href={`/tags/${tag}/`}>{tag}<span>{count}</span></a></li>
+			))}</ul>
+		</nav>
 			<div class="post-filters" role="group" aria-label="글 분류">
 				{
 					["전체", "회고", "기술"].map((category) => (
@@ -28,8 +51,17 @@ const tags = getUniqueTagsWithCount(posts);
 			</div>
 			<div class="post-list">
 				{
-					posts.map((post) => (
+					cards.map(({ post, thumbnail, credit }) => (
 						<article data-post-category={post.data.category}>
+							{thumbnail && (
+								<a title={credit ? `${credit.author} · ${credit.license}` : undefined} class="post-cover" href={`/posts/${post.id}/`} aria-hidden="true" tabindex="-1">
+									{typeof thumbnail === "string" ? (
+										<img src={thumbnail} alt="" loading="lazy" decoding="async" />
+									) : <Image src={thumbnail} alt="" width={640} />}
+								</a>
+							)}
+							{credit && <div class="thumbnail-credit"><a href={credit.source} target="_blank" rel="noopener noreferrer">{credit.author}</a> · <a href={credit.licenseUrl} target="_blank" rel="noopener noreferrer">{credit.license}</a></div>}
+
 							<>
 								<time datetime={post.data.publishDate.toISOString()}>
 									{post.data.publishDate.toLocaleDateString("ko-KR", {
@@ -39,7 +71,7 @@ const tags = getUniqueTagsWithCount(posts);
 										timeZone: "Asia/Seoul",
 									})}
 								</time>
-								<div>
+								<div class="post-card-title">
 									<>
 										<h2>
 											<a href={`/posts/${post.id}/`}>{post.data.title}</a>
@@ -53,21 +85,7 @@ const tags = getUniqueTagsWithCount(posts);
 				}
 			</div>
 			<p id="empty-category" hidden class="page-description">아직 작성된 글이 없습니다.</p>
-		</section><aside class="index-aside">
-			<h2>Tags</h2><ul>
-				{
-					tags.map(([tag, count]) => (
-						<li>
-							<a href={`/tags/${tag}/`}>
-								{tag}
-								<span>{count}</span>
-							</a>
-						</li>
-					))
-				}
-			</ul><a href="/tags/">View all →</a><br/><a href="/rss.xml">RSS feed</a>
-		</aside>
-	</div>
+	</section>
 </Base>
 <script>
 	const buttons = [...document.querySelectorAll<HTMLButtonElement>("[data-category-filter]")];
